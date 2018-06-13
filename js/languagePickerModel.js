@@ -17,9 +17,10 @@ define([
         },
 
         getLanguageDetails: function (language) {
+            var languageid = language.split('_').pop();
             var _languages = this.get('_languages');
             return _.find(_languages, function (item) {
-                return (item._language == language);
+                return (item._language == languageid);
             });
         },
 

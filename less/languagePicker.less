@@ -9,6 +9,26 @@ body {
 	}
 }
 
+.languagepicker-languages {
+    select {
+        position: relative;
+        font-family: @font-family;
+        font-size: 16px;
+        text-transform: uppercase;
+        margin: 2em 0;
+        width: 50%;
+        padding: 5px 35px 5px 5px;
+        border: none;
+        height: 34px;
+        background: url(../../assets/icon-language-1.svg) no-repeat white;
+		background-position: right 16px center;
+		background-size: 6%;
+    }
+}
+
+.languagepicker-roles{
+    height:100vh;
+}
 .languagepicker {
 	.languagepicker-inner {
 		
@@ -28,8 +48,8 @@ body {
 			.languagepicker-body-inner {
 			}
 		}
-		.languagepicker-languages {
-			.languagepicker-language {
+		.languagepicker-role {
+			.languagepicker-role {
 				margin: (@button-margin-top*0.5) 1% (@button-margin-bottom*0.5);
 				width: 48%;
 				float: left;

@@ -6,7 +6,7 @@ define([
     var LanguagePickerView = Backbone.View.extend({
         
         events: {
-            'click .languagepicker-languages button': 'onLanguageClick'
+            'click .languagepicker-roles button': 'onLanguageClick'
         },
         
         className: 'languagepicker',
@@ -20,7 +20,6 @@ define([
         
         render: function () {
             var data = this.model.toJSON();
-            this.adjustForRoles(data);
             var template = Handlebars.templates[this.constructor.template];
             this.$el.html(template(data));
             this.$el.addClass(data._classes);
@@ -38,7 +37,11 @@ define([
         
         onLanguageClick: function (event) {
             this.destroyAccessibility();
-            this.model.setLanguage($(event.target).val());
+            var roleid = $(event.target).val();
+            var languageid = $('.languagepicker-language').val();
+            var newlanguageid = roleid + '_' + languageid;
+            console.log('newlanguageid: ' + newlanguageid);/***/
+            this.model.setLanguage(newlanguageid);
         },
 
         initializeAccessibility: function() {
@@ -58,24 +61,9 @@ define([
             $("html").removeClass("in-languagepicker");
 
             Backbone.View.prototype.remove.apply(this, arguments);
-        },
-
-        adjustForRoles: function(data){
-            if ((data) && (data._languages))
-            {
-                for (var idx = 0; idx < data._languages.length; idx++)
-                {
-                    if ((data._languages[idx]) && (data._languages[idx]._language))
-                    {
-                        var languagename = data._languages[idx]._language;
-                        var languagenameparts = languagename.split('_');
-                        data._languages[idx]._part1 = languagenameparts[0];
-                        data._languages[idx]._part2 = (languagenameparts.length === 2) ? languagenameparts[1] : '';
-                    }
-                }
-            }
         }
-    }, {
+    },
+    {
         template: 'languagePickerView'
     });
 

@@ -10,8 +10,17 @@
         </div>
     </div>
     <div class="languagepicker-languages">
+        <select class="languagepicker-language" name="languages">
         {{#each _languages}}
-            <button class="languagepicker-language {{_part1}}" value="{{_part1}}">
+            <option value="{{_language}}">
+                {{{ displayName }}}
+            </option>
+        {{/each}}
+        </select>
+    </div>
+    <div class="languagepicker-roles">
+        {{#each _roles}}
+            <button class="languagepicker-role {{_role}}" value="{{_role}}">
                 {{{ displayName }}}
             </button>
         {{/each}}
