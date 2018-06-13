@@ -23,9 +23,12 @@ define([
         },
         
         onButtonClick: function (event) {
-            var newLanguage = $(event.target).attr('data-language');
-            this.model.set('newLanguage', newLanguage);
-            var data = this.model.getLanguageDetails(newLanguage);
+            var roleid = $(event.target).val();
+            var languageid = $('.languagepicker-language').val();
+            var newlanguageid = roleid + '_' + languageid;
+            console.log('newlanguageid: ' + newlanguageid);/***/
+            this.model.set('newLanguage', newlanguageid);
+            var data = this.model.getLanguageDetails(newlanguageid);
             
             var promptObject = {
                 _classes: "dir-ltr",

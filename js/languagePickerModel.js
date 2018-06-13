@@ -47,6 +47,24 @@ define([
             }
 
             this.set('_languages', languages);
+        },
+        
+        markRoleAsSelected: function(role) {
+            var roles = this.get('_roles');
+
+            for (var i = 0; i < roles.length; i++)
+            {
+                if (roles[i]._language === language)
+                {
+                    roles[i]._isSelected = true;
+                }
+                else
+                {
+                    roles[i]._isSelected = false;
+                }
+            }
+
+            this.set('_roles', roles);
         }
         
     });

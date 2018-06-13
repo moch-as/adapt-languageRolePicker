@@ -1,9 +1,20 @@
 <div class="languagepicker">
   <div class="languagepicker-inner">
-     {{#each _languages}}
-        <div class="languagepicker-language drawer-item {{#if _isSelected}}selected{{/if}} {{_language}} {{#equals _direction "rtl"}}dir-rtl{{/equals}}">
-          <button class="base drawer-item-open" data-language="{{_language}}" {{#if _isSelected}}disabled{{/if}}>{{displayName}}</button>
+    <div class="languagepicker-languages">
+      <select class="languagepicker-language drawer-item-language" name="languages">
+        {{#each _languages}}
+          <option value="{{_language}}" {{#if _isSelected}}selected{{/if}}">
+            {{{ displayName }}}
+          </option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="languagepicker-roles">
+      {{#each _roles}}
+        <div class="languagepicker-language drawer-item {{_role}} {{#if _isSelected}}selected{{/if}}">
+          <button class="base drawer-item-open" value="{{_role}}">{{displayName}}</button>
         </div>
-     {{/each}}
+      {{/each}}
+    </div>
   </div>
 </div>
