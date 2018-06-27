@@ -32,16 +32,21 @@ define([
         },
         
         onConfigChange: function (model, value, options) {
+            this.markRoleAsSelected(value);
             this.markLanguageAsSelected(value);
         },
         
         markLanguageAsSelected: function(language) {
             var languages = this.get('_languages');
 
-            for (var i = 0; i < languages.length; i++) {
-                if (languages[i]._language === language) {
+            for (var i = 0; i < languages.length; i++)
+            {
+                if (languages[i]._language === language.split('_').pop())
+                {
                     languages[i]._isSelected = true;
-                } else {
+                }
+                else
+                {
                     languages[i]._isSelected = false;
                 }
             }
@@ -49,12 +54,12 @@ define([
             this.set('_languages', languages);
         },
         
-        markRoleAsSelected: function(role) {
+        markRoleAsSelected: function(language) {
             var roles = this.get('_roles');
 
             for (var i = 0; i < roles.length; i++)
             {
-                if (roles[i]._language === language)
+                if (roles[i]._role === language.split('_').shift())
                 {
                     roles[i]._isSelected = true;
                 }
@@ -65,8 +70,15 @@ define([
             }
 
             this.set('_roles', roles);
-        }
+        },
         
+        getSelectedLanguageId: function() {
+            var roles = this.get('_roles');
+            var languages = this.get('_languages');
+            var selectedrole = roles.find(function(role) {return role._isSelected});
+            var selectedlanguage = languages.find(function(language) {return language._isSelected});
+            return (selectedrole && selectedlanguage) ? selectedrole._role + '_' + selectedlanguage._language : '';
+        }
     });
     
     return LanguagePickerModel;

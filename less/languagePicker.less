@@ -20,9 +20,10 @@ body {
         padding: 5px 35px 5px 5px;
         border: none;
         height: 34px;
-        background: url(../../assets/icon-language-1.svg) no-repeat white;
-		background-position: right 16px center;
-		background-size: 6%;
+        background: white;
+        // background: url(../../assets/icon-language-1.svg) no-repeat white;
+		// background-position: left 16px center;
+		// background-size: 6%;
 
 		&.drawer-item-language {
 			margin: 1em;
@@ -32,9 +33,14 @@ body {
     }
 }
 
-.languagepicker-roles{
-    height:100vh;
+.languagepicker-roles {
+	height:100vh;
 }
+
+.languagepicker-roles .drawer-item .drawer-item-open.role-selected {
+	color: darken(@drawer-item-text-color, 40);
+}
+
 .languagepicker {
 	.languagepicker-inner {
 		
@@ -55,14 +61,12 @@ body {
 			}
 		}
 		.languagepicker-role {
-			.languagepicker-role {
-				margin: (@button-margin-top*0.5) 1% (@button-margin-bottom*0.5);
-				width: 48%;
-				float: left;
-				@media all and (max-width:(@device-width-small - 1px)) {
-					width: 98%;
-				}
-			}
+			margin: (@button-margin-top*0.5) 1% (@button-margin-bottom*0.5);
+			width: 48%;
+			float: left;
+			@media all and (max-width:(@device-width-small - 1px)) {
+				width: 98%;
+		}
 		}
 	}
 }

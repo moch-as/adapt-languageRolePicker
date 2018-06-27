@@ -26,7 +26,10 @@ define([
             var roleid = $(event.target).val();
             var languageid = $('.languagepicker-language').val();
             var newlanguageid = roleid + '_' + languageid;
-            console.log('newlanguageid: ' + newlanguageid);/***/
+            if (newlanguageid === this.model.getSelectedLanguageId())
+            {
+                return;
+            }
             this.model.set('newLanguage', newlanguageid);
             var data = this.model.getLanguageDetails(newlanguageid);
             

@@ -40,7 +40,6 @@ define([
             var roleid = $(event.target).val();
             var languageid = $('.languagepicker-language').val();
             var newlanguageid = roleid + '_' + languageid;
-            console.log('newlanguageid: ' + newlanguageid);/***/
             this.model.setLanguage(newlanguageid);
         },
 
