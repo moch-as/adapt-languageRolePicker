@@ -75,12 +75,15 @@ define([
         getSelectedLanguageId: function() {
             var roles = this.get('_roles');
             var languages = this.get('_languages');
-            var selectedrole = roles.find(function(role) {return role._isSelected});
-            var selectedlanguage = languages.find(function(language) {return language._isSelected});
+            var selectedrole = _.find(roles, function (role) {
+                return role._isSelected;
+            });
+            var selectedlanguage = _.find(languages, function (language) {
+                return language._isSelected;
+            });
             return (selectedrole && selectedlanguage) ? selectedrole._role + '_' + selectedlanguage._language : '';
         }
     });
     
     return LanguagePickerModel;
-    
 });
