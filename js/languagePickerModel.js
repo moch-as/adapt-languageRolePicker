@@ -31,6 +31,20 @@ define([
             });
         },
         
+        rolelanguageExists: function (rolelanguage) {
+            var roles = this.get('_roles');
+            var languages = this.get('_languages');
+            var role = rolelanguage.split('_').shift();
+            var language = rolelanguage.split('_').pop();
+            var foundrole = _.find(roles, function (item) {
+                return (item._role == role);
+            });
+            var foundlanguage = _.find(languages, function (item) {
+                return (item._language == language);
+            });
+            return foundrole && foundlanguage;
+        },
+
         onConfigChange: function (model, value, options) {
             this.markRoleAsSelected(value);
             this.markLanguageAsSelected(value);

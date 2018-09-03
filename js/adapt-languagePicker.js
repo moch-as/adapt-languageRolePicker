@@ -44,7 +44,7 @@ define([
 
         if (storedLanguage)
         {
-            if (languagePickerModel.getLanguageDetails(storedLanguage))
+            if (languagePickerModel.rolelanguageExists(storedLanguage))
             {
                 languagePickerModel.setLanguage(storedLanguage);
             }
