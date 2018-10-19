@@ -10,6 +10,8 @@ body {
 }
 
 .languagepicker-languages {
+	margin: 0 1%;
+	
     select {
         position: relative;
         font-family: @font-family;
@@ -21,9 +23,6 @@ body {
         border: none;
         height: 34px;
         background: white;
-        // background: url(../../assets/icon-language-1.svg) no-repeat white;
-		// background-position: left 16px center;
-		// background-size: 6%;
 
 		&.drawer-item-language {
 			margin: 1em;
@@ -64,9 +63,15 @@ body {
 			margin: (@button-margin-top*0.5) 1% (@button-margin-bottom*0.5);
 			width: 48%;
 			float: left;
+			background-color: #0032c8;
+
+			&:hover {
+				background-color: #001862;
+			}
+
 			@media all and (max-width:(@device-width-small - 1px)) {
 				width: 98%;
-		}
+			}
 		}
 	}
 }
