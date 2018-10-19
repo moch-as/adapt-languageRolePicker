@@ -12,7 +12,7 @@
     <div class="languagepicker-roles">
       {{#each _roles}}
         <div class="languagepicker-language drawer-item{{#if _isSelected}} selected{{/if}} {{_role}}{{#equals _direction "rtl"}} dir-rtl{{/equals}}">
-          <button class="base drawer-item-open{{#if _isSelected}} role-selected{{/if}}" value="{{_role}}">{{displayName}}</button>
+          <button class="base drawer-item-open{{#if _isSelected}} role-selected{{/if}}" value="{{_role}}">{{{displayName}}</button>
         </div>
       {{/each}}
     </div>
