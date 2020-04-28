@@ -1,5 +1,6 @@
 define([
         'core/js/adapt',
+        'backbone',
         'extensions/adapt-contrib-spoor/js/scorm'
 ], function (Adapt, Backbone, ScormWrapper) {
     
