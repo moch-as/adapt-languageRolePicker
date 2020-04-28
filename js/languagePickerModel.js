@@ -34,7 +34,7 @@ define([
         },
         
         updateLanguageTracking: function (language) {
-            if (ScormWrapper && ScormWrapper.setPassed && language)
+            if (ScormWrapper && ScormWrapper.getInteractionIndex && language)
             {
                 var course_role = language.split('_').shift();
                 var course_language = language.split('_').pop();
