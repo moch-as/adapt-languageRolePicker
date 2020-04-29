@@ -1,8 +1,7 @@
 define([
         'core/js/adapt',
-        'backbone',
-        'extensions/adapt-contrib-spoor/js/scorm'
-], function (Adapt, Backbone, ScormWrapper) {
+        'backbone'
+], function (Adapt, Backbone) {
     
     var LanguagePickerModel = Backbone.Model.extend({
         
@@ -30,17 +29,6 @@ define([
                 '_activeLanguage': language,
                 '_defaultDirection': this.getLanguageDetails(language)._direction
             });
-            this.updateLanguageTracking(language);
-        },
-        
-        updateLanguageTracking: function (language) {
-            if (ScormWrapper && ScormWrapper.getInteractionIndex && language)
-            {
-                var course_role = language.split('_').shift();
-                var course_language = language.split('_').pop();
-                ScormWrapper.recordInteraction('course_role', course_role, true, null, 'other', true);
-                ScormWrapper.recordInteraction('course_language', course_language, true, null, 'other', true);
-            }
         },
         
         rolelanguageExists: function (rolelanguage) {
