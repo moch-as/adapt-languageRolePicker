@@ -152,6 +152,7 @@ define([
             });
             return foundrole && foundlanguage;
         },
+
         onConfigChange: function (model, value, options) {
             this.markRoleAsSelected(value);
             this.markLanguageAsSelected(value);
