@@ -56,27 +56,3 @@
     {{/if}}
 
 </div>
-
-
-
-
-<div class="languagepicker-inner">
-
-    <div class="languagepicker-languages">
-        <div class="languagepicker-languages-icon icon icon-language-1"></div>
-        <select class="languagepicker-language" name="languages">
-        {{#each _languages}}
-            <option value="{{_language}}">
-                {{{ displayName }}}
-            </option>
-        {{/each}}
-        </select>
-    </div>
-    <div class="languagepicker-roles">
-        {{#each _roles}}
-            <button class="languagepicker-role {{_role}}" value="{{_role}}">
-                {{{ displayName }}}
-            </button>
-        {{/each}}
-    </div>
-</div>
