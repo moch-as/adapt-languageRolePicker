@@ -36,7 +36,7 @@ define([
         onLanguageClick: function (event) {
             this.destroyNavigation();
             const roleid = event.currentTarget.value;
-            const languageid = $('.languagepicker-language').val();
+            const languageid = $('.languagepicker__options-select').val();
             const lang = roleid + '_' + languageid;
             this.model.setLanguage(lang);
         },
