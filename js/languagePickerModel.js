@@ -37,15 +37,17 @@ define([
         },
         
         markLanguageAsSelected: function(language) {
-            this.get('_languages').forEach(item => {
+            const languages = this.get('_languages');
+            languages.forEach(item => {
                 item._isSelected = (item._language === language.split('_').pop());
             });
             this.set('_languages', languages);
         },
         
         markRoleAsSelected: function(language) {
-            this.get('_roles').forEach(item => {
-                item._isSelected = (item._language === language.split('_').shift());
+            const roles = this.get('_roles');
+            roles.forEach(item => {
+                item._isSelected = (item._role === language.split('_').shift());
             });
             this.set('_roles', roles);
         },
