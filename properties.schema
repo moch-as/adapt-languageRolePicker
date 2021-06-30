@@ -11,6 +11,14 @@
       "inputType": "Text",
       "validators": [],
       "translatable": true
+    },
+    "languageSelector": {
+      "type": "string",
+      "required": true,
+      "default": "Language selector",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
     }
   },
   "properties": {
@@ -80,6 +88,15 @@
                   "validators": [],
                   "help": "Your default options here are: icon-globe, icon-language-1, icon-language-2"
                 },
+                "_restoreStateOnLanguageChange": {
+                  "type": "boolean",
+                  "required": true,
+                  "default": false,
+                  "title": "Restore course state on language change",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "help": "Determines whether or not the language picker will try to restore the 'state' of the course when the user changes language. It is advised that you only enable this setting if all course languages have exactly the same structure; if they do not, some loss of tracking data will occur. If this setting is disabled, tracking data will be cleared when the user switches language - the 'Confirm Message' should be used to warn the user of this."
+                },
                 "_classes": {
                   "type": "string",
                   "required": false,
@@ -116,6 +133,15 @@
                         "validators": ["required"],
                         "help": ""
                       },
+                      "_isDisabled": {
+                        "type": "boolean",
+                        "required": true,
+                        "default": false,
+                        "title": "Is disabled",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "help": "Allows you to disable selection of this language. This can be useful in situations where localisation into a particular language has not yet been completed."
+                      },                      
                       "displayName": {
                         "type": "string",
                         "required": true,
@@ -166,65 +192,6 @@
                             "validators": ["required"],
                             "help": "Button text to cancel language change."
                           }
-                        }
-                      }
-                    }
-                  }
-                },
-                "_accessibility": {
-                  "type": "object",
-                  "required": false,
-                  "title": "Accessibility",
-                  "properties": {
-                    "accessibilityToggleTextOn": {
-                      "type": "string",
-                      "required": true,
-                      "default": "Turn accessibility on?",
-                      "title": "Toggle on label",
-                      "inputType": "Text",
-                      "validators": ["required"],
-                      "help": ""
-                    },
-                    "accessibilityToggleTextOff": {
-                      "type": "string",
-                      "required": true,
-                      "default": "Turn accessibility off?",
-                      "title": "Toggle off label",
-                      "inputType": "Text",
-                      "validators": ["required"],
-                      "help": ""
-                    },
-                    "_accessibilityInstructions": {
-                      "type": "object",
-                      "required": false,
-                      "title": "Accessibility instructions",
-                      "properties": {
-                        "touch": {
-                          "type": "string",
-                          "required": true,
-                          "default": "Usage instructions. Use swipe right for next. Use swipe left for previous. Use a double tap to select. Use a two finger slide up to go to the top of the page.",
-                          "title": "For touch devices",
-                          "inputType": "Text",
-                          "validators": ["required"],
-                          "help": ""
-                        },
-                        "notouch": {
-                          "type": "string",
-                          "required": true,
-                          "default": "Usage instructions. Use tab for next. Use shift tab for previous. Use enter to select. Use escape to go to the top of the page.",
-                          "title": "For non-touch devices",
-                          "inputType": "Text",
-                          "validators": ["required"],
-                          "help": ""
-                        },
-                        "ipad": {
-                          "type": "string",
-                          "required": true,
-                          "default": "Usage instructions for touchscreens. Use swipe right for next. Use swipe left for previous. Use a double tap to select. Use a two finger slide up to go to the top of the page. Usage instructions for keyboard access. Use right for next. Use left for previous. Use up and down together to select.",
-                          "title": "For iPad",
-                          "inputType": "Text",
-                          "validators": ["required"],
-                          "help": ""
                         }
                       }
                     }
