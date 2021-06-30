@@ -1,19 +1,19 @@
 define([
     'core/js/adapt',
-    './accessibilityView'
-], function(Adapt, accessibilityView) {
+    './languagePickerNavigationView'
+], function(Adapt, NavigationView) {
     
     var LanguagePickerView = Backbone.View.extend({
         
         events: {
-            'click .languagepicker-roles button': 'onLanguageClick'
+            'click .js-languagepicker-btn-click': 'onLanguageClick'
         },
         
         className: 'languagepicker',
         
         initialize: function () {
-            this.initializeAccessibility();
-            $("html").addClass("in-languagepicker");
+            this.initializeNavigation();
+            $('html').addClass('in-languagepicker');
             this.listenTo(Adapt, 'remove', this.remove);
             this.render();
         },
@@ -24,45 +24,38 @@ define([
             this.$el.html(template(data));
             this.$el.addClass(data._classes);
 
-            document.title = this.model.get('title') || "";
+            document.title = this.model.get('title') || '';
             
-            _.defer(_.bind(function () {
-                this.postRender();
-            }, this));
+            _.defer(this.postRender.bind(this));
         },
         
         postRender: function () {
-            $('.loading').hide();
+            $('.js-loading').hide();
         },
         
         onLanguageClick: function (event) {
-            this.destroyAccessibility();
-            var roleid = $(event.target).val();
-            var languageid = $('.languagepicker-language').val();
-            var newlanguageid = roleid + '_' + languageid;
-            this.model.setLanguage(newlanguageid);
+            this.destroyNavigation();
+            const roleid = event.currentTarget.value;
+            const languageid = $('.languagepicker-language').val();
+            const lang = roleid + '_' + languageid;
+            this.model.setLanguage(lang);
         },
 
-        initializeAccessibility: function() {
-            this.accessibilityView = new accessibilityView({
-                model:this.model
-            });
-            
-            // we need to re-render if accessibility gets switched on
-            this.listenTo(this.accessibilityView, 'accessibility:toggle', this.render);
+        initializeNavigation: function() {
+            this.navigationView = new NavigationView({ model: this.model });
         },
-
-        destroyAccessibility: function() {
-            this.accessibilityView.remove();
+      
+        destroyNavigation: function() {
+            this.navigationView.remove();
         },
-
+      
         remove: function() {
-            $("html").removeClass("in-languagepicker");
-
+            $('html').removeClass('in-languagepicker');
+      
             Backbone.View.prototype.remove.apply(this, arguments);
         }
-    },
-    {
+      
+    }, {
         template: 'languagePickerView'
     });
 

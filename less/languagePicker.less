@@ -1,154 +1,46 @@
-// overwrite from base less
-// required for changing text-direction during the course
-body {
-	.dir-rtl & {
-    	direction: rtl;
- 	}
-	.dir-ltr & {
-    	direction: ltr;;
-	}
-}
-
-.languagepicker-languages {
-	margin: 0 1%;
-	
-    select {
-        position: relative;
-        font-family: @font-family;
-        font-size: 16px;
-        text-transform: uppercase;
-        margin: 2em 0;
-        width: 50%;
-        padding: 5px 35px 5px 5px;
-        border: none;
-        height: 34px;
-        background: white;
-
-		&.drawer-item-language {
-			margin: 1em;
-			width: 90%;
-			background-size: 9%;
-		}
-    }
-}
-
-.languagepicker-roles {
-	height:100vh;
-}
-
-.languagepicker-roles .drawer-item .drawer-item-open.role-selected {
-	color: darken(@drawer-item-text-color, 40);
-
-	&:after {
-		content: "\e633";
-		font-family: "vanilla";
-		color: green;
-	}
-}
-
+// Language Picker standalone page
+// --------------------------------------------------
 .languagepicker {
-	.languagepicker-inner {
-		
-		.responsive-layout;
-		
-		.languagepicker-title {
-			margin: 0 1%;
-			padding: @menu-title-padding-top 0px @menu-title-padding-bottom;
-			.languagepicker-title-inner {
-				font-size: (@font-size*3);
-				line-height: (@font-size*3 + 10px);
-			}
-		}
-		.languagepicker-body {
-			margin: 0 1%;
-			padding: @menu-body-padding-top 0px;
-			.languagepicker-body-inner {
-			}
-		}
-		.languagepicker-role {
-			margin: (@button-margin-top*0.5) 1% (@button-margin-bottom*0.5);
-			width: 48%;
-			float: left;
-			background-color: #0032c8;
-
-			&:hover {
-				background-color: #001862;
-			}
-
-			@media all and (max-width:(@device-width-small - 1px)) {
-				width: 98%;
-			}
-		}
+	&__inner {
+	  .l-container-responsive(@device-width-large);
 	}
-}
-
-/*
-	Icon in Navigationbar
-*/
-.navigation {
-	.navigation-inner {
-		.languagepicker-icon {
-			float: right;
-
-			.dir-rtl & {
-				float: left;
-			}
-		}
+  }
+  
+  // Language Picker drawer
+  // --------------------------------------------------
+  .languagepicker-drawer {
+	&__item.is-rtl {
+	  direction: rtl;
 	}
-}
-
-/*
-	Drawer
-*/
-.drawer-holder .languagepicker {
-	.languagepicker-inner {
-
-		width: 100%;
-
-		.languagepicker-language {
-
-			.dir-rtl {
-				button {
-					direction: rtl;
-					text-align: inherit;
-				}
-			}
-		}
+  }
+  
+  // Nav button styling
+  // --------------------------------------------------
+  .nav {
+	&__languagepicker-btn {
+	  .u-float-right;
 	}
-}
-
-/*
-	Notify
-*/
-.notify .notify-popup.notify-type-prompt {
-	text-align: inherit;
-	
-	&.dir-rtl {
-		direction: rtl;
-
-		.notify-popup-icon {
-			right: inherit;
-			left: 0;
-		}
-			
-		.notify-popup-title,
-		.notify-popup-body {
-			padding-left: 60px;
-			padding-right: inherit;
-		}
+  }
+  
+  // Notify direction amends
+  // --------------------------------------------------
+  .notify {
+	&__popup.is-ltr {
+	  direction: ltr;
 	}
-	&.dir-ltr {
-		direction: ltr;
-
-		.notify-popup-icon {
-			right: 0;
-			left: inherit;
-		}
-			
-		.notify-popup-title,
-		.notify-popup-body {
-			padding-left: inherit;
-			padding-right: 60px;
-		}
+  
+	&__popup.is-ltr &__icon {
+	  left: inherit;
+	  right: 0;
 	}
-}
+  
+	&__popup.is-rtl {
+	  direction: rtl;
+	}
+  
+	&__popup.is-rtl &__icon {
+	  right: inherit;
+	  left: 0;
+	}
+  }
+  

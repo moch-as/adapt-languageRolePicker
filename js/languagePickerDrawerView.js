@@ -1,19 +1,20 @@
 define([
-    'core/js/adapt',
-    'backbone'
-], function(Adapt, Backbone) {
+    'core/js/adapt'
+], function(Adapt) {
     
     var LanguagePickerDrawerView = Backbone.View.extend({
         
         events: {
-            'click button': 'onButtonClick'
+            'click .js-languagepicker-item-btn': 'onButtonClick'
         },
         
         initialize: function () {
-            this.listenTo(Adapt, 'remove', this.remove);
-            this.listenTo(Adapt, 'languagepicker:changelanguage:yes', this.onDoChangeLanguage);
-            this.listenTo(Adapt, 'languagepicker:changelanguage:no', this.onDontChangeLanguage);
-            this.render();
+            this.listenTo(Adapt, {
+                remove: this.remove,
+                'languagepicker:changelanguage:yes': this.onDoChangeLanguage,
+                'languagepicker:changelanguage:no': this.onDontChangeLanguage
+              });
+              this.render();
         },
         
         render: function () {
@@ -34,42 +35,38 @@ define([
             var data = this.model.getLanguageDetails(newlanguageid);
             
             var promptObject = {
-                _classes: "dir-ltr",
+                _attributes: { lang: newLanguage },
+                _classes: `is-lang-${newLanguage} ${data._direction === 'rtl' ? 'is-rtl' : 'is-ltr'}`,
                 title: data.warningTitle,
                 body: data.warningMessage,
-                _prompts:[
+                _prompts: [
                     {
                         promptText: data._buttons.yes,
-                        _callbackEvent: "languagepicker:changelanguage:yes"
+                        _callbackEvent: 'languagepicker:changelanguage:yes'
                     },
                     {
                         promptText: data._buttons.no,
-                        _callbackEvent: "languagepicker:changelanguage:no"
+                        _callbackEvent: 'languagepicker:changelanguage:no'
                     }
                 ],
                 _showIcon: true
             };
 
-            if (data._direction === 'rtl') {
-                promptObject._classes = "dir-rtl";
-            }
-            
-            //keep active element incase the user cancels - usually navigation bar icon
-            this.$finishFocus = $.a11y.state.focusStack.pop();
-            //move drawer close focus to #focuser
-            $.a11y.state.focusStack.push($("#focuser"));
+            // keep active element incase the user cancels - usually navigation bar icon
+            // move drawer close focus to #focuser
+            this.$finishFocus = Adapt.a11y._popup._focusStack.pop();
+            Adapt.a11y._popup._focusStack.push($('#a11y-focuser'));
 
-            Adapt.once('drawer:closed', function() {
-                //wait for drawer to fully close
-                _.delay(function(){
-                    //show yes/no popup
-                    Adapt.once('popup:opened', function() {
-                        //move popup close focus to #focuser
-                        $.a11y.state.focusStack.pop();
-                        $.a11y.state.focusStack.push($("#focuser"));
+            Adapt.once('drawer:closed', () => {
+                // wait for drawer to fully close
+                _.delay(() => {
+                    Adapt.once('popup:opened', () => {
+                        // move popup close focus to #focuser
+                        Adapt.a11y._popup._focusStack.pop();
+                        Adapt.a11y._popup._focusStack.push($('#a11y-focuser'));
                     });
-
-                    Adapt.trigger('notify:prompt', promptObject);
+                    // show yes/no popup
+                    Adapt.notify.prompt(promptObject);
                 }, 250);
             });
 
@@ -77,20 +74,21 @@ define([
         },
         
         onDoChangeLanguage: function () {
-            // set default languge
             var newLanguage = this.model.get('newLanguage');
+            this.model.setTrackedData();
             this.model.setLanguage(newLanguage);
             this.remove();
         },
         
+        /**
+         * If the learner selects 'no' in the 'confirm language change' prompt,
+         * wait for notify to close completely then send focus to the
+         * navigation bar icon
+         */
         onDontChangeLanguage: function () {
             this.remove();
 
-            //wait for notify to close fully
-            _.delay(_.bind(function(){
-                //focus on navigation bar icon
-                this.$finishFocus.a11y_focus();
-            }, this), 500);
+            _.delay(() => Adapt.a11y.focusFirst(this.$finishFocus), 500);
 
         }
         

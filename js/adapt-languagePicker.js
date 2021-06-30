@@ -1,10 +1,9 @@
 define([
     'core/js/adapt',
-    'backbone',
     './languagePickerView',
     './languagePickerNavView',
     './languagePickerModel'
-], function(Adapt, Backbone, LanguagePickerView, LanguagePickerNavView, LanguagePickerModel) {
+], function(Adapt, LanguagePickerView, LanguagePickerNavView, LanguagePickerModel) {
 
     var languagePickerModel;
 
@@ -21,18 +20,17 @@ define([
         if (!Adapt.config.has('_languagePicker')) return;
         if (!Adapt.config.get('_languagePicker')._isEnabled) return;
     
-        Adapt.config.set("_canLoadData", false);
+        Adapt.config.set('_canLoadData', false);
 
         languagePickerModel = new LanguagePickerModel(Adapt.config.get('_languagePicker'));
         
-        Adapt.on('router:page', setupNavigationView);
-        Adapt.on('router:menu', setupNavigationView);
+        Adapt.on('router:menu router:page', setupNavigationView);
             
-        if(Adapt.offlineStorage.ready) {// on the offchance that it may already be ready...
+        if (Adapt.offlineStorage.ready) { // on the offchance that it may already be ready...
             onOfflineStorageReady();
-        } else {
-            Adapt.once('offlineStorage:ready', onOfflineStorageReady);
-        }
+            return;
+          }
+          Adapt.once('offlineStorage:ready', onOfflineStorageReady);
     }
 
     /**
@@ -40,7 +38,7 @@ define([
      * If it was, load it. If it wasn't, show the language picker
      */
     function onOfflineStorageReady() {
-        var storedLanguage = Adapt.offlineStorage.get("lang");
+        var storedLanguage = Adapt.offlineStorage.get('lang');
 
         if (storedLanguage)
         {
@@ -56,11 +54,10 @@ define([
         else if (languagePickerModel.get('_showOnCourseLoad') === false)
         {
             languagePickerModel.setLanguage(Adapt.config.get('_defaultLanguage'));
+            return;
         }
-        else
-        {
-            showLanguagePickerView();
-        }
+      
+         showLanguagePickerView();
     }
 
     function showLanguagePickerView () {
@@ -84,12 +81,12 @@ define([
 
         var languagePickerNavView = new LanguagePickerNavView({
             model: languagePickerModel,
-            attributes:  {
-                "aria-label": navigationBarLabel
+            attributes: {
+                'aria-label': navigationBarLabel
             }
         });
         
-        languagePickerNavView.$el.appendTo('.navigation-inner');
+        languagePickerNavView.$el.appendTo('.nav__inner');
     }
     
 });
