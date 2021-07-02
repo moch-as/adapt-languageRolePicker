@@ -24,8 +24,8 @@ define([
         },
         
         onButtonClick: function (event) {
-            var roleid = $(event.target).val();
-            var languageid = $('.languagepicker-language').val();
+            var roleid = event.currentTarget.dataset.language;
+            var languageid = document.getElementById('languagepicker-drawer-languages').value;
             var newlanguageid = roleid + '_' + languageid;
             if (newlanguageid === this.model.getSelectedLanguageId())
             {
