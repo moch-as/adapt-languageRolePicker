@@ -48,7 +48,7 @@ define([
             }
             else
             {
-                showLanguagePickerView();
+                askEssensForLanguage();
             }
         }
         else if (languagePickerModel.get('_showOnCourseLoad') === false)
@@ -57,9 +57,35 @@ define([
             return;
         }
       
-         showLanguagePickerView();
+        askEssensForLanguage();
     }
 
+    function askEssensForLanguage () {
+        if (Adapt.essensAPI)
+        {
+            Adapt.essensAPI.getLanguage().then(language => {
+                if (languagePickerModel.languageExists(language))
+                {
+                    languagePickerModel.setLanguage(language);
+                    if (languagePickerModel.get('_roles'))
+                    {
+                        showLanguagePickerView();
+                    }
+                }
+                else
+                {
+                    showLanguagePickerView();
+                }
+            }).catch(error => {
+                showLanguagePickerView();
+            });
+        }
+        else
+        {
+            showLanguagePickerView();
+        }
+    }
+    
     function showLanguagePickerView () {
         var languagePickerView = new LanguagePickerView({
             model: languagePickerModel

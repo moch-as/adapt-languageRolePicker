@@ -146,6 +146,13 @@ define([
             return (!rolename || foundrole) && foundlanguage;
         },
 
+        languageExists: function (language) {
+            const languagename = this.getLanguagePart(language);
+            const languages = this.get('_languages');
+            const foundlanguage = languages ? languages.find(item => item._language == languagename) : undefined;
+            return foundlanguage;
+        },
+
         onConfigChange: function (model, value, options) {
             this.markRoleAsSelected(value);
             this.markLanguageAsSelected(value);
