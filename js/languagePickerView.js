@@ -34,10 +34,18 @@ define([
         },
         
         onLanguageClick: function (event) {
+            let lang = '';
             this.destroyNavigation();
-            const roleid = event.currentTarget.value;
-            const languageid = $('.languagepicker__options-select').val();
-            const lang = roleid + '_' + languageid;
+            if (event.currentTarget.classList.contains('languagepicker__roles-btn'))
+            {
+                const roleid = event.currentTarget.dataset.language;
+                const languageid = document.getElementById('languagepicker-languages-select').value;
+                lang = roleid + '_' + languageid;
+            }
+            else
+            {
+                lang = event.currentTarget.dataset.language;
+            }
             this.model.setLanguage(lang);
         },
 

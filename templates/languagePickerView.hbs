@@ -19,7 +19,7 @@
     {{#if _roles}}
         <div class="languagepicker__options">
             <div class="languagepicker__options-icon icon icon-language-1"></div>
-            <select class="languagepicker__options-select" name="languages">
+            <select class="languagepicker__options-select" name="languages" id="languagepicker-languages-select">
 
             {{#each _languages}}
                 <option value="{{_language}}"{{#if _isSelected}} selected{{/if}}>

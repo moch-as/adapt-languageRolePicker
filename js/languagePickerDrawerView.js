@@ -24,9 +24,17 @@ define([
         },
         
         onButtonClick: function (event) {
-            var roleid = event.currentTarget.dataset.language;
-            var languageid = document.getElementById('languagepicker-drawer-languages').value;
-            var newlanguageid = roleid + '_' + languageid;
+            let newlanguageid = '';
+            if (event.currentTarget.classList.contains('languagepicker-drawer__roles-btn'))
+            {
+                const roleid = event.currentTarget.dataset.language;
+                const languageid = document.getElementById('languagepicker-drawer-languages-select').value;
+                newlanguageid = roleid + '_' + languageid;
+            }
+            else
+            {
+                newlanguageid = event.currentTarget.dataset.language;
+            }
             if (newlanguageid === this.model.getSelectedLanguageId())
             {
                 return;
