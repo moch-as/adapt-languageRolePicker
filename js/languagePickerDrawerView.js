@@ -35,8 +35,8 @@ define([
             var data = this.model.getLanguageDetails(newlanguageid);
             
             var promptObject = {
-                _attributes: { lang: newLanguage },
-                _classes: `is-lang-${newLanguage} ${data._direction === 'rtl' ? 'is-rtl' : 'is-ltr'}`,
+                _attributes: { lang: newlanguageid },
+                _classes: `is-lang-${newlanguageid} ${data._direction === 'rtl' ? 'is-rtl' : 'is-ltr'}`,
                 title: data.warningTitle,
                 body: data.warningMessage,
                 _prompts: [
