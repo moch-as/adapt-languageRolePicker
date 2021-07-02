@@ -24,9 +24,9 @@ define([
         },
 
         getLanguageDetails: function (language) {
-            var languageid = language.split('_').pop();
+            var languageid = getLanguagePart(language);
             var _languages = this.get('_languages');
-            return _.find(_languages, item => item._language === languageid);
+            return _languages.find(item => item._language === languageid);
         },
 
         setLanguage: function (language) {
@@ -38,18 +38,17 @@ define([
         
         markLanguageAsSelected: function(language) {
             const languages = this.get('_languages');
-            languages.forEach(item => {
-                item._isSelected = (item._language === language.split('_').pop());
-            });
+            languages.forEach(item => {item._isSelected = (item._language === getLanguagePart(language))});
             this.set('_languages', languages);
         },
         
         markRoleAsSelected: function(language) {
             const roles = this.get('_roles');
-            roles.forEach(item => {
-                item._isSelected = (item._role === language.split('_').shift());
-            });
-            this.set('_roles', roles);
+            if (roles)
+            {
+                roles.forEach(item => {item._isSelected = (item._role === getRolePart(language))});
+                this.set('_roles', roles);
+            }
         },
         
         onDataLoaded: function() {
@@ -128,36 +127,38 @@ define([
         },
       
         getSelectedLanguageId: function() {
-            var roles = this.get('_roles');
-            var languages = this.get('_languages');
-            var selectedrole = _.find(roles, function (role) {
-                return role._isSelected;
-            });
-            var selectedlanguage = _.find(languages, function (language) {
-                return language._isSelected;
-            });
-            return (selectedrole && selectedlanguage) ? selectedrole._role + '_' + selectedlanguage._language : '';
+            const roles = this.get('_roles');
+            const selectedrole = roles ? roles.find(role => role._isSelected) : undefined;
+            const roleprefix = selectedrole ? selectedrole +  '_' : '';
+            const languages = this.get('_languages');
+            const selectedlanguage = languages.find(language => language._isSelected);
+
+            return selectedlanguage ? roleprefix + selectedlanguage._language : '';
         },
 
         rolelanguageExists: function (rolelanguage) {
-            var roles = this.get('_roles');
-            var languages = this.get('_languages');
-            var role = rolelanguage.split('_').shift();
-            var language = rolelanguage.split('_').pop();
-            var foundrole = _.find(roles, function (item) {
-                return (item._role == role);
-            });
-            var foundlanguage = _.find(languages, function (item) {
-                return (item._language == language);
-            });
-            return foundrole && foundlanguage;
+            const rolename = getRolePart(rolelanguage);
+            const languagename = getLanguagePart(rolelanguage);
+            const roles = this.get('_roles');
+            const foundrole = roles ? roles.find(item => item._role == rolename) : undefined;
+            const languages = this.get('_languages');
+            const foundlanguage = languages ? languages.find(item => item._language == languagename) : undefined;
+            return (!rolename || foundrole) && foundlanguage;
         },
 
         onConfigChange: function (model, value, options) {
             this.markRoleAsSelected(value);
             this.markLanguageAsSelected(value);
+        },
+
+        getLanguagePart: function(language) {
+            return language.includes('_') ? language.split('_').pop() : language;
+        },
+
+        getRolePart: function(language) {
+            return language.includes('_') ? language.split('_').shift(): '';
         }
     });
-    
+
     return LanguagePickerModel;
 });
