@@ -46,8 +46,13 @@ define([
             const roles = this.get('_roles');
             if (roles)
             {
-                roles.forEach(item => {item._isSelected = (item._role === this.getRolePart(language))});
+                const selectedRole = this.getRolePart(language);
+                roles.forEach(item => {item._isSelected = (item._role === selectedRole)});
                 this.set('_roles', roles);
+                if (Adapt.essensAPI)
+                {
+                    Adapt.essensAPI.setRole(selectedRole);
+                }
             }
         },
         
