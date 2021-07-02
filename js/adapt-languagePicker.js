@@ -45,10 +45,7 @@ define([
             if (languagePickerModel.rolelanguageExists(storedLanguage))
             {
                 languagePickerModel.setLanguage(storedLanguage);
-            }
-            else
-            {
-                askEssensForLanguage();
+                return;
             }
         }
         else if (languagePickerModel.get('_showOnCourseLoad') === false)
@@ -56,10 +53,7 @@ define([
             languagePickerModel.setLanguage(Adapt.config.get('_defaultLanguage'));
             return;
         }
-        else
-        {
-            askEssensForLanguage();
-        }
+        askEssensForLanguage();
     }
 
     function askEssensForLanguage () {
