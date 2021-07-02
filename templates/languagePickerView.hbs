@@ -34,7 +34,7 @@
             <div class="languagepicker__button-inner">
 
             {{#each _roles}}
-                <button class="btn-text languagepicker__roles-btn is-{{_role}} js-languagepicker-btn-click{{#if _isDisabled}} is-disabled{{/if}}" value="{{_role}}"{{#if _isDisabled}} aria-disabled="true" tabindex="-1"{{/if}} language="{{_role}}">
+                <button class="btn-text languagepicker__roles-btn is-{{_role}} js-languagepicker-btn-click{{#if _isDisabled}} is-disabled{{/if}}" value="{{_role}}"{{#if _isDisabled}} aria-disabled="true" tabindex="-1"{{/if}} data-language="{{_role}}">
                     {{{compile displayName}}}
                 </button>
             {{/each}}
@@ -46,7 +46,7 @@
             <div class="languagepicker__button-inner">
 
             {{#each _languages}}
-                <button class="btn-text languagepicker__language-btn is-{{_language}} js-languagepicker-btn-click{{#if _isDisabled}} is-disabled{{/if}}" value="{{_language}}"{{#if _isDisabled}} aria-disabled="true" tabindex="-1"{{/if}} language="{{_language}}">
+                <button class="btn-text languagepicker__language-btn is-{{_language}} js-languagepicker-btn-click{{#if _isDisabled}} is-disabled{{/if}}" value="{{_language}}"{{#if _isDisabled}} aria-disabled="true" tabindex="-1"{{/if}} data-language="{{_language}}">
                     {{{compile displayName}}}
                 </button>
             {{/each}}

@@ -24,7 +24,7 @@ define([
         },
 
         getLanguageDetails: function (language) {
-            var languageid = getLanguagePart(language);
+            var languageid = this.getLanguagePart(language);
             var _languages = this.get('_languages');
             return _languages.find(item => item._language === languageid);
         },
@@ -38,7 +38,7 @@ define([
         
         markLanguageAsSelected: function(language) {
             const languages = this.get('_languages');
-            languages.forEach(item => {item._isSelected = (item._language === getLanguagePart(language))});
+            languages.forEach(item => {item._isSelected = (item._language === this.getLanguagePart(language))});
             this.set('_languages', languages);
         },
         
@@ -46,7 +46,7 @@ define([
             const roles = this.get('_roles');
             if (roles)
             {
-                roles.forEach(item => {item._isSelected = (item._role === getRolePart(language))});
+                roles.forEach(item => {item._isSelected = (item._role === this.getRolePart(language))});
                 this.set('_roles', roles);
             }
         },
@@ -137,8 +137,8 @@ define([
         },
 
         rolelanguageExists: function (rolelanguage) {
-            const rolename = getRolePart(rolelanguage);
-            const languagename = getLanguagePart(rolelanguage);
+            const rolename = this.getRolePart(rolelanguage);
+            const languagename = this.getLanguagePart(rolelanguage);
             const roles = this.get('_roles');
             const foundrole = roles ? roles.find(item => item._role == rolename) : undefined;
             const languages = this.get('_languages');
