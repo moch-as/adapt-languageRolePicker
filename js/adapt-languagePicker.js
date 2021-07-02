@@ -56,8 +56,10 @@ define([
             languagePickerModel.setLanguage(Adapt.config.get('_defaultLanguage'));
             return;
         }
-      
-        askEssensForLanguage();
+        else
+        {
+            askEssensForLanguage();
+        }
     }
 
     function askEssensForLanguage () {
