@@ -22,6 +22,7 @@ export default class LanguagePickerModel extends Backbone.Model {
   initialize() {
     this.listenTo(Adapt.config, 'change:_activeLanguage', this.markLanguageAsSelected);
     this.listenTo(Adapt, 'app:dataLoaded', this.onDataLoaded);
+    this.makeLanguageIdList();
   }
 
   getLanguageDetails(language) {
@@ -63,8 +64,6 @@ export default class LanguagePickerModel extends Backbone.Model {
 // }
 
 onDataLoaded() {
-    this.makeLanguageIdList();
-
     if (!this.get('_restoreStateOnLanguageChange')) {
       return;
     }
