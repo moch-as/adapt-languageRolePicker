@@ -48,19 +48,20 @@ class LanguagePicker extends Backbone.Controller {
 
     if (storedLanguage) {
       languagePickerModel.setLanguage(storedLanguage);
+    }
 
-      if (storedLanguage) {
-        if (languagePickerModel.rolelanguageExists(storedLanguage)) {
-          languagePickerModel.setLanguage(storedLanguage);
-          return;
-        }
-      }
-      else if (languagePickerModel.get('_showOnCourseLoad') === false) {
-        languagePickerModel.setLanguage(Adapt.config.get('_defaultLanguage'));
+    if (storedLanguage) {
+      if (languagePickerModel.rolelanguageExists(storedLanguage)) {
+        languagePickerModel.setLanguage(storedLanguage);
         return;
       }
-      askEssensForLanguage();
     }
+    else if (languagePickerModel.get('_showOnCourseLoad') === false) {
+      languagePickerModel.setLanguage(Adapt.config.get('_defaultLanguage'));
+      return;
+    }
+    
+    askEssensForLanguage();
   }
 
   askEssensForLanguage() {
