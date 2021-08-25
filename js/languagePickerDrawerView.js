@@ -24,7 +24,7 @@ export default class LanguagePickerDrawerView extends Backbone.View {
   }
 
   onButtonClick(event) {
-    const hasRoles = event.currentTarget.classList.contains('languagepicker__roles-btn');
+    const hasRoles = event.currentTarget.classList.contains('languagepicker-drawer__roles-btn');
     const rolePart = hasRoles ? event.currentTarget.dataset.language : '';
     const languagePart = hasRoles ? document.getElementById('languagepicker-languages-select').value : event.currentTarget.dataset.language;
     const newLanguage = (rolePart.length > 0) ? `${rolePart}_${languagePart}` : languagePart;
