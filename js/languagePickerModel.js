@@ -122,7 +122,8 @@ onDataLoaded() {
   }
       
   getSelectedLanguage() {
-      const selectedlanguage = languages.find(language => language._isSelected);
+    const languages = this.get('_languages');
+    const selectedlanguage = languages.find(language => language._isSelected);
       return selectedlanguage ? selectedlanguage._language : '';
   }
 
