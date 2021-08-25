@@ -1,18 +1,21 @@
 {
-    "name": "adapt-languageRolePicker",
-    "repository": "git://github.com/moch-as/adapt-languageRolePicker.git",
-    "framework": ">=5.5",
-    "version": "1.0.0-BETA01",
-    "homepage": "https://github.com/moch-as/adapt-languageRolePicker",
-    "issues": "https://github.com/moch-as/adapt-languageRolePicker",
-    "displayName": "Language Role Picker",
-    "extension": "languageRolePicker",
-    "description": "An extension to select a language and/or role",
-    "main": "/js/adapt-languagePicker.js",
-    "keywords": [
-        "adapt-plugin",
-        "adapt-extension"
-    ],
-    "license": "GPLv3",
-    "targetAttribute": "_languageRolePicker"
+  "name": "adapt-languageRolePicker",
+  "repository": {
+    "type":"git",
+    "url": "git://github.com/moch-as/adapt-languageRolePicker.git"
+  },
+  "version": "1.0.0-BETA02",
+  "framework": ">=5.15.5",
+  "homepage": "https://github.com/moch-as/adapt-languageRolePicker",
+  "issues": "https://github.com/moch-as/adapt-languageRolePicker",
+  "displayName": "Language Role Picker",
+  "extension": "languageRolePicker",
+  "description": "An extension to select a language and/or role",
+  "main": "/js/adapt-languagePicker.js",
+  "keywords": [
+    "adapt-plugin",
+    "adapt-extension"
+  ],
+  "license": "GPL-3.0",
+  "targetAttribute": "_languageRolePicker"
 }

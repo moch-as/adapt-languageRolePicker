@@ -1,114 +1,117 @@
-define([
-    'core/js/adapt',
-    './languagePickerView',
-    './languagePickerNavView',
-    './languagePickerModel'
-], function(Adapt, LanguagePickerView, LanguagePickerNavView, LanguagePickerModel) {
+import Adapt from 'core/js/adapt';
+import LanguagePickerView from './languagePickerView';
+import LanguagePickerNavView from './languagePickerNavView';
+import LanguagePickerModel from './languagePickerModel';
 
-    var languagePickerModel;
+class LanguagePicker extends Backbone.Controller {
 
-    Adapt.once('configModel:dataLoaded', onConfigLoaded);
+  initialize() {
+    this.listenTo(Adapt, 'configModel:dataLoaded', this.onConfigLoaded);
+  }
 
-    /**
-     * Once the Adapt config has loaded, check to see if the language picker is enabled. If it is:
-     * - stop the rest of the .json from loading
-     * - set up the language picker model
-     * - register for events to allow us to display the language picker icon in the navbar on pages and menus
-     * - wait for offline storage to be ready so that we can check to see if there's a stored language choice or not
-     */
-    function onConfigLoaded() {
-        if (!Adapt.config.has('_languagePicker')) return;
-        if (!Adapt.config.get('_languagePicker')._isEnabled) return;
-    
-        Adapt.config.set('_canLoadData', false);
+  /**
+ * Once the Adapt config has loaded, check to see if the language picker is enabled. If it is:
+ * - stop the rest of the .json from loading
+ * - set up the language picker model
+ * - register for events to allow us to display the language picker icon in the navbar on pages and menus
+ * - wait for offline storage to be ready so that we can check to see if there's a stored language choice or not
+ */
+  onConfigLoaded() {
+    const config = Adapt.config.get('_languagePicker');
+    if (!config?._isEnabled) return;
 
-        languagePickerModel = new LanguagePickerModel(Adapt.config.get('_languagePicker'));
-        
-        Adapt.on('router:menu router:page', setupNavigationView);
-            
-        if (Adapt.offlineStorage.ready) { // on the offchance that it may already be ready...
-            onOfflineStorageReady();
-            return;
-          }
-          Adapt.once('offlineStorage:ready', onOfflineStorageReady);
+    this.languagePickerModel = new LanguagePickerModel(config);
+
+    this.listenTo(Adapt, 'router:menu router:page', this.setupNavigationView);
+
+    const params = new URLSearchParams(window.location.search);
+    const paramLang = params.get('lang');
+
+    if (paramLang && Adapt.build.get('availableLanguageNames').includes(paramLang)) return;
+
+    Adapt.config.set('_canLoadData', false);
+
+    if (Adapt.offlineStorage.ready) { // on the offchance that it may already be ready...
+      this.onOfflineStorageReady();
+      return;
     }
 
-    /**
-     * Once offline storage is ready, check to see if a language was previously selected by the user
-     * If it was, load it. If it wasn't, show the language picker
-     */
-    function onOfflineStorageReady() {
-        var storedLanguage = Adapt.offlineStorage.get('lang');
+    this.listenToOnce(Adapt, 'offlineStorage:ready', this.onOfflineStorageReady);
+  }
 
-        if (storedLanguage)
-        {
-            if (languagePickerModel.rolelanguageExists(storedLanguage))
-            {
-                languagePickerModel.setLanguage(storedLanguage);
-                return;
-            }
+  /**
+   * Once offline storage is ready, check to see if a language was previously selected by the user
+   * If it was, load it. If it wasn't, show the language picker
+   */
+  onOfflineStorageReady() {
+    const storedLanguage = Adapt.offlineStorage.get('lang');
+
+    if (storedLanguage) {
+      languagePickerModel.setLanguage(storedLanguage);
+
+      if (storedLanguage) {
+        if (languagePickerModel.rolelanguageExists(storedLanguage)) {
+          languagePickerModel.setLanguage(storedLanguage);
+          return;
         }
-        else if (languagePickerModel.get('_showOnCourseLoad') === false)
-        {
-            languagePickerModel.setLanguage(Adapt.config.get('_defaultLanguage'));
-            return;
-        }
-        askEssensForLanguage();
+      }
+      else if (languagePickerModel.get('_showOnCourseLoad') === false) {
+        languagePickerModel.setLanguage(Adapt.config.get('_defaultLanguage'));
+        return;
+      }
+      askEssensForLanguage();
     }
+  }
 
-    function askEssensForLanguage () {
-        if (Adapt.essensAPI)
-        {
-            Adapt.essensAPI.getLanguage().then(language => {
-                if (languagePickerModel.languageExists(language))
-                {
-                    languagePickerModel.setLanguage(language);
-                    if (languagePickerModel.get('_roles'))
-                    {
-                        showLanguagePickerView();
-                    }
-                }
-                else
-                {
-                    showLanguagePickerView();
-                }
-            }).catch(error => {
-                showLanguagePickerView();
-            });
-        }
-        else
-        {
+  askEssensForLanguage() {
+    if (Adapt.essensAPI) {
+      Adapt.essensAPI.getLanguage().then(language => {
+        if (languagePickerModel.languageExists(language)) {
+          languagePickerModel.setLanguage(language);
+          if (languagePickerModel.get('_roles')) {
             showLanguagePickerView();
+          }
         }
-    }
-    
-    function showLanguagePickerView () {
-        var languagePickerView = new LanguagePickerView({
-            model: languagePickerModel
-        });
-        
-        languagePickerView.$el.appendTo('#wrapper');
-    }
-    
-    function setupNavigationView () {
-        /* 
-         * On the framework this isn't an issue, but courses built in the authoring tool before the ARIA label 
-         * was added will break unless the extension is removed then added again.
-         */
-        var courseGlobals = Adapt.course.get('_globals')._extensions;
-        var navigationBarLabel = '';
-        if (courseGlobals._languagePicker) {
-            navigationBarLabel = courseGlobals._languagePicker.navigationBarLabel;
+        else {
+          showLanguagePickerView();
         }
+      }).catch(error => {
+        showLanguagePickerView();
+      });
+    }
+    else {
+      showLanguagePickerView();
+    }
+  }
 
-        var languagePickerNavView = new LanguagePickerNavView({
-            model: languagePickerModel,
-            attributes: {
-                'aria-label': navigationBarLabel
-            }
-        });
-        
-        languagePickerNavView.$el.appendTo('.nav__inner');
+  showLanguagePickerView() {
+    const languagePickerView = new LanguagePickerView({
+      model: this.languagePickerModel
+    });
+
+    languagePickerView.$el.appendTo('#wrapper');
+  }
+
+  setupNavigationView() {
+    /*
+      * On the framework this isn't an issue, but courses built in the authoring tool before the ARIA label
+      * was added will break unless the extension is removed then added again.
+      */
+    const courseGlobals = Adapt.course.get('_globals')._extensions;
+    let navigationBarLabel = '';
+    if (courseGlobals._languagePicker) {
+      navigationBarLabel = courseGlobals._languagePicker.navigationBarLabel;
     }
-    
-});
+
+    const languagePickerNavView = new LanguagePickerNavView({
+      model: this.languagePickerModel,
+      attributes: {
+        'aria-label': navigationBarLabel
+      }
+    });
+
+    languagePickerNavView.$el.appendTo('.nav__inner');
+  }
+}
+
+export default new LanguagePicker();

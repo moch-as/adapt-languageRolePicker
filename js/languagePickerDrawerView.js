@@ -1,112 +1,104 @@
-define([
-    'core/js/adapt'
-], function(Adapt) {
-    
-    var LanguagePickerDrawerView = Backbone.View.extend({
-        
-        events: {
-            'click .js-languagepicker-item-btn': 'onButtonClick'
-        },
-        
-        initialize: function () {
-            this.listenTo(Adapt, {
-                remove: this.remove,
-              });
-              this.render();
-        },
-        
-        render: function () {
-            var data = this.model.toJSON();
-            var template = Handlebars.templates[this.constructor.template];
-            this.$el.html(template(data));
-        },
-        
-        onButtonClick: function (event) {
-            let newlanguageid = '';
-            if (event.currentTarget.classList.contains('languagepicker-drawer__roles-btn'))
-            {
-                const roleid = event.currentTarget.dataset.language;
-                const languageid = document.getElementById('languagepicker-drawer-languages-select').value;
-                newlanguageid = roleid + '_' + languageid;
-            }
-            else
-            {
-                newlanguageid = event.currentTarget.dataset.language;
-            }
-            if (newlanguageid === this.model.getSelectedLanguageId())
-            {
-                return;
-            }
-            this.model.set('newLanguage', newlanguageid);
-            var data = this.model.getLanguageDetails(newlanguageid);
-            
-            var promptObject = {
-                _attributes: { lang: newlanguageid },
-                _classes: `is-lang-${newlanguageid} ${data._direction === 'rtl' ? 'is-rtl' : 'is-ltr'}`,
-                title: data.warningTitle,
-                body: data.warningMessage,
-                _prompts: [
-                    {
-                        promptText: data._buttons.yes,
-                        _callbackEvent: 'languagepicker:changelanguage:yes'
-                    },
-                    {
-                        promptText: data._buttons.no,
-                        _callbackEvent: 'languagepicker:changelanguage:no'
-                    }
-                ],
-                _showIcon: true
-            };
+import Adapt from 'core/js/adapt';
 
-            // keep active element incase the user cancels - usually navigation bar icon
-            // move drawer close focus to #focuser
-            this.$finishFocus = Adapt.a11y._popup._focusStack.pop();
-            Adapt.a11y._popup._focusStack.push($('#a11y-focuser'));
+export default class LanguagePickerDrawerView extends Backbone.View {
 
-            Adapt.once('drawer:closed', () => {
-                // wait for drawer to fully close
-                _.delay(() => {
-                    this.listenToOnce(Adapt, {
-                        'popup:opened': this.onPopupOpened,
-                        'languagepicker:changelanguage:yes': this.onDoChangeLanguage,
-                        'languagepicker:changelanguage:no notify:cancelled': this.onDontChangeLanguage
-                    });
+  get template() {
+    return 'languagePickerDrawerView';
+  }
 
-                    // show yes/no popup
-                    Adapt.notify.prompt(promptObject);
-                }, 250);
-            });
+  events() {
+    return {
+      'click .js-languagepicker-item-btn': 'onButtonClick'
+    };
+  }
 
-            Adapt.trigger('drawer:closeDrawer');
+  initialize() {
+    this.listenTo(Adapt, 'remove', this.remove);
+    this.render();
+  }
+
+  render() {
+    const data = this.model.toJSON();
+    const template = Handlebars.templates[this.template];
+    this.$el.html(template(data));
+  }
+
+  onButtonClick(event) {
+    let newLanguage = '';
+
+    if (event.currentTarget.classList.contains('languagepicker-drawer__roles-btn'))
+    {
+      const roleid = event.currentTarget.dataset.language;
+      const languageid = document.getElementById('languagepicker-drawer-languages-select').value;
+      newLanguage = roleid + '_' + languageid;
+    }
+    else
+    {
+      newLanguage = event.currentTarget.dataset.language;
+    }
+
+    if (newLanguage === this.model.getSelectedLanguageId()) return;
+
+    this.model.set('newLanguage', newLanguage);
+    this.promptObject = this.getPromptObject(newLanguage);
+    this.listenToOnce(Adapt, 'drawer:closed', this.onDrawerClosed);
+    Adapt.trigger('drawer:closeDrawer');
+  }
+  
+  onDrawerClosed() {
+    // wait for drawer to fully close
+    _.delay(() => {
+      this.listenToOnce(Adapt, {
+        'popup:opened': this.onPopupOpened,
+        'languagepicker:changelanguage:yes': this.onDoChangeLanguage,
+        'languagepicker:changelanguage:no': this.onDontChangeLanguage
+      });
+      // show yes/no popup
+      Adapt.notify.prompt(this.promptObject);
+    }, 250);
+  }
+
+  onPopupOpened() {
+    // move popup close focus to #focuser
+    // keep active element incase the user cancels - usually navigation bar icon
+    this.$finishFocus = Adapt.a11y.setPopupCloseTo($('#a11y-focuser'));
+  }
+
+  onDoChangeLanguage() {
+    const newLanguage = this.model.get('newLanguage');
+    this.model.setTrackedData();
+    this.model.setLanguage(newLanguage);
+    this.remove();
+  }
+
+  /**
+   * If the learner selects 'no' in the 'confirm language change' prompt,
+   * wait for notify to close completely then send focus to the
+   * navigation bar icon
+   */
+  onDontChangeLanguage() {
+    this.remove();
+    _.delay(() => Adapt.a11y.focusFirst(this.$finishFocus), 500);
+  }
+  
+  getPromptObject(newLanguage) {
+    const data = this.model.getLanguageDetails(newLanguage);
+    return {
+      _attributes: { lang: newLanguage },
+      _classes: `is-lang-${newLanguage} ${data._direction === 'rtl' ? 'is-rtl' : 'is-ltr'}`,
+      title: data.warningTitle,
+      body: data.warningMessage,
+      _prompts: [
+        {
+          promptText: data._buttons.yes,
+          _callbackEvent: 'languagepicker:changelanguage:yes'
         },
-        
-        onPopupOpened: function () {
-            // move popup close focus to #focuser
-            Adapt.a11y.setPopupCloseTo($('#a11y-focuser'));
-        },
-
-        onDoChangeLanguage: function () {
-            var newLanguage = this.model.get('newLanguage');
-            this.model.setTrackedData();
-            this.model.setLanguage(newLanguage);
-            this.remove();
-        },
-        
-        /**
-         * If the learner selects 'no' in the 'confirm language change' prompt,
-         * wait for notify to close completely then send focus to the
-         * navigation bar icon
-         */
-        onDontChangeLanguage: function () {
-            this.remove();
-
-            _.delay(() => Adapt.a11y.focusFirst(this.$finishFocus), 500);
+        {
+          promptText: data._buttons.no,
+          _callbackEvent: 'languagepicker:changelanguage:no'
         }
-        
-    }, {
-        template: 'languagePickerDrawerView'
-    });
-
-    return LanguagePickerDrawerView;
-
-});
+      ],
+      _showIcon: true
+    };
+  }
+}
