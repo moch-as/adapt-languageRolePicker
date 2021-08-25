@@ -61,7 +61,7 @@ class LanguagePicker extends Backbone.Controller {
       return;
     }
 
-    askEssensForLanguage();
+    this.askEssensForLanguage();
   }
 
   askEssensForLanguage() {
@@ -70,18 +70,18 @@ class LanguagePicker extends Backbone.Controller {
         if (this.languagePickerModel.languageExists(language)) {
           this.languagePickerModel.setLanguage(language);
           if (this.languagePickerModel.get('_roles')) {
-            showLanguagePickerView();
+            this.showLanguagePickerView();
           }
         }
         else {
-          showLanguagePickerView();
+          this.showLanguagePickerView();
         }
       }).catch(error => {
-        showLanguagePickerView();
+        this.showLanguagePickerView();
       });
     }
     else {
-      showLanguagePickerView();
+      this.showLanguagePickerView();
     }
   }
 
