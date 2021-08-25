@@ -63,6 +63,8 @@ export default class LanguagePickerModel extends Backbone.Model {
 // }
 
 onDataLoaded() {
+    this.makeLanguageIdList();
+
     if (!this.get('_restoreStateOnLanguageChange')) {
       return;
     }
@@ -70,6 +72,16 @@ onDataLoaded() {
       this.locationId = Adapt.offlineStorage.get('location') || null;
       this.restoreState();
     });
+  }
+
+  makeLanguageIdList() {
+    const languageIdList = this.get('_languages').map((element) => {
+      return {_language: this.getLanguagePart(element._language), displayName: element.displayName};
+    }).filter((element, index, list) => {
+      return (list.findIndex(e => (e._language === element._language)) === index);
+    });
+
+    this.set('_languageids', languageIdList);
   }
 
   restoreLocation() {

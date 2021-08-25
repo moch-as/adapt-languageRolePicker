@@ -40,20 +40,11 @@ export default class LanguagePickerView extends Backbone.View {
   }
 
   onLanguageClick(event) {
-    let lang = '';
     this.destroyNavigation();
-    if (event.currentTarget.classList.contains('languagepicker__roles-btn'))
-    {
-      // const roleid = event.currentTarget.dataset.language;
-      // const languageid = document.getElementById('languagepicker-languages-select').value;
-      // lang = `${roleid}_${languageid}`;
-      lang = document.getElementById('languagepicker-languages-select').value;
-    }
-    else
-    {
-      lang = event.currentTarget.dataset.language;
-    }
-    this.model.setLanguage(lang);
+    const rolePart = (event.currentTarget.classList.contains('languagepicker__roles-btn')) ? document.getElementById('languagepicker-languages-select').value : '';
+    const languagePart = event.currentTarget.dataset.language;
+    const newLanguage = (rolePart.length > 0) ? `${rolePart}_${languagePart}` : languagePart;
+    this.model.setLanguage(newLanguage);
   }
 
   initializeNavigation() {
