@@ -21,7 +21,7 @@
             <div class="languagepicker__options-icon icon icon-language-1"></div>
             <select class="languagepicker__options-select" name="languages" id="languagepicker-languages-select">
 
-            {{#each _languages}}
+            {{#each _languageids}}
                 <option value="{{_language}}"{{#if _isSelected}} selected{{/if}}>
                     {{{compile displayName}}}
                 </option>
@@ -45,7 +45,7 @@
         <div class="languagepicker__button">
             <div class="languagepicker__button-inner">
 
-            {{#each _languages}}
+            {{#each _languageids}}
                 <button class="btn-text languagepicker__language-btn is-{{_language}} js-languagepicker-btn-click{{#if _isDisabled}} is-disabled{{/if}}" value="{{_language}}"{{#if _isDisabled}} aria-disabled="true" tabindex="-1"{{/if}} data-language="{{_language}}">
                     {{{compile displayName}}}
                 </button>
