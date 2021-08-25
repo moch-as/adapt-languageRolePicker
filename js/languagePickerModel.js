@@ -25,8 +25,8 @@ export default class LanguagePickerModel extends Backbone.Model {
   }
 
   getLanguageDetails(language) {
-    var languageId = this.getLanguagePart(language);
-    return this.get('_languages').find(({ _language }) => _language === languageId);
+    // var languageId = this.getLanguagePart(language);
+    return this.get('_languages').find(({ _language }) => _language === language);
   }
 
   setLanguage(language) {
@@ -38,23 +38,29 @@ export default class LanguagePickerModel extends Backbone.Model {
 
   markLanguageAsSelected(model, language) {
     this.get('_languages').forEach(item => {
-      item._isSelected = (item._language === this.getLanguagePart(language));
+      item._isSelected = (item._language === language);
     });
-  }
 
-  markRoleAsSelected(language) {
-    const roles = this.get('_roles');
-    if (roles)
+    if (Adapt.essensAPI)
     {
-        const selectedRole = this.getRolePart(language);
-        roles.forEach(item => {item._isSelected = (item._role === selectedRole)});
-        this.set('_roles', roles);
-        if (Adapt.essensAPI)
-        {
-            Adapt.essensAPI.setRole(selectedRole);
-        }
+      const selectedRole = this.getRolePart(language);
+      Adapt.essensAPI.setRole(selectedRole);
     }
 }
+
+//   markRoleAsSelected(language) {
+//     const roles = this.get('_roles');
+//     if (roles)
+//     {
+//         const selectedRole = this.getRolePart(language);
+//         roles.forEach(item => {item._isSelected = (item._role === selectedRole)});
+//         this.set('_roles', roles);
+//         if (Adapt.essensAPI)
+//         {
+//             Adapt.essensAPI.setRole(selectedRole);
+//         }
+//     }
+// }
 
 onDataLoaded() {
     if (!this.get('_restoreStateOnLanguageChange')) {
@@ -118,35 +124,34 @@ onDataLoaded() {
     restoreModel.setTrackableState(stateObject);
   }
       
-  getSelectedLanguageId() {
-      const roles = this.get('_roles');
-      const selectedrole = roles ? roles.find(role => role._isSelected) : undefined;
-      const roleprefix = selectedrole ? selectedrole +  '_' : '';
-      const languages = this.get('_languages');
+  getSelectedLanguage() {
+      // const roles = this.get('_roles');
+      // const selectedrole = roles ? roles.find(role => role._isSelected) : undefined;
+      // const roleprefix = selectedrole ? selectedrole +  '_' : '';
+      // const languages = this.get('_languages');
       const selectedlanguage = languages.find(language => language._isSelected);
-
-      return selectedlanguage ? `${roleprefix}${selectedlanguage._language}` : '';
+      return selectedlanguage ? selectedlanguage._language : '';
   }
 
-  rolelanguageExists(rolelanguage) {
-      const rolename = this.getRolePart(rolelanguage);
-      const languagename = this.getLanguagePart(rolelanguage);
-      const roles = this.get('_roles');
-      const foundrole = roles ? roles.find(item => item._role == rolename) : undefined;
-      const languages = this.get('_languages');
-      const foundlanguage = languages ? languages.find(item => item._language == languagename) : undefined;
-      return (!rolename || foundrole) && foundlanguage;
-  }
+  // rolelanguageExists(rolelanguage) {
+  //     const rolename = this.getRolePart(rolelanguage);
+  //     const languagename = this.getLanguagePart(rolelanguage);
+  //     const roles = this.get('_roles');
+  //     const foundrole = roles ? roles.find(item => item._role == rolename) : undefined;
+  //     const languages = this.get('_languages');
+  //     const foundlanguage = languages ? languages.find(item => item._language == languagename) : undefined;
+  //     return (!rolename || foundrole) && foundlanguage;
+  // }
 
   languageExists(language) {
-      const languagename = this.getLanguagePart(language);
+      // const languagename = this.getLanguagePart(language);
       const languages = this.get('_languages');
-      const foundlanguage = languages ? languages.find(item => item._language == languagename) : undefined;
+      const foundlanguage = languages ? languages.some(item => item._language === language) : false;
       return foundlanguage;
   }
 
   onConfigChange(model, value, options) {
-      this.markRoleAsSelected(value);
+      // this.markRoleAsSelected(value);
       this.markLanguageAsSelected(value);
   }
 

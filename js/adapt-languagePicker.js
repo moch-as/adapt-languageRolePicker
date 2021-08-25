@@ -51,7 +51,7 @@ class LanguagePicker extends Backbone.Controller {
     }
 
     if (storedLanguage) {
-      if (this.languagePickerModel.rolelanguageExists(storedLanguage)) {
+      if (this.languagePickerModel.languageExists(storedLanguage)) {
         this.languagePickerModel.setLanguage(storedLanguage);
         return;
       }

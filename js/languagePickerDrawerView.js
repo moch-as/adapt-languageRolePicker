@@ -30,14 +30,14 @@ export default class LanguagePickerDrawerView extends Backbone.View {
     {
       const roleid = event.currentTarget.dataset.language;
       const languageid = document.getElementById('languagepicker-drawer-languages-select').value;
-      newLanguage = roleid + '_' + languageid;
+      newLanguage = `${roleid}_${languageid}`;
     }
     else
     {
       newLanguage = event.currentTarget.dataset.language;
     }
 
-    if (newLanguage === this.model.getSelectedLanguageId()) return;
+    if (newLanguage === this.model.getSelectedLanguage()) return;
 
     this.model.set('newLanguage', newLanguage);
     this.promptObject = this.getPromptObject(newLanguage);
