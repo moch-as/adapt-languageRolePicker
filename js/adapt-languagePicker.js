@@ -47,29 +47,29 @@ class LanguagePicker extends Backbone.Controller {
     const storedLanguage = Adapt.offlineStorage.get('lang');
 
     if (storedLanguage) {
-      languagePickerModel.setLanguage(storedLanguage);
+      this.languagePickerModel.setLanguage(storedLanguage);
     }
 
     if (storedLanguage) {
-      if (languagePickerModel.rolelanguageExists(storedLanguage)) {
-        languagePickerModel.setLanguage(storedLanguage);
+      if (this.languagePickerModel.rolelanguageExists(storedLanguage)) {
+        this.languagePickerModel.setLanguage(storedLanguage);
         return;
       }
     }
-    else if (languagePickerModel.get('_showOnCourseLoad') === false) {
-      languagePickerModel.setLanguage(Adapt.config.get('_defaultLanguage'));
+    else if (this.languagePickerModel.get('_showOnCourseLoad') === false) {
+      this.languagePickerModel.setLanguage(Adapt.config.get('_defaultLanguage'));
       return;
     }
-    
+
     askEssensForLanguage();
   }
 
   askEssensForLanguage() {
     if (Adapt.essensAPI) {
       Adapt.essensAPI.getLanguage().then(language => {
-        if (languagePickerModel.languageExists(language)) {
-          languagePickerModel.setLanguage(language);
-          if (languagePickerModel.get('_roles')) {
+        if (this.languagePickerModel.languageExists(language)) {
+          this.languagePickerModel.setLanguage(language);
+          if (this.languagePickerModel.get('_roles')) {
             showLanguagePickerView();
           }
         }
