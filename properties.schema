@@ -106,6 +106,36 @@
                   "validators": [],
                   "help": ""
                 },
+                "_roles": {
+                  "type": "array",
+                  "required": false,
+                  "title": "Roles",
+                  "items": {
+                    "type": "object",
+                    "required": true,
+                    "title": "Roles",
+                    "properties": {
+                      "_role": {
+                        "type": "string",
+                        "required": true,
+                        "default": "",
+                        "title": "Role name",
+                        "inputType": "Text",
+                        "validators": ["required"],
+                        "help": "The name of the role (no spaces or special characters)"
+                      },
+                      "displayName": {
+                        "type": "string",
+                        "required": true,
+                        "default": "",
+                        "title": "Language Display Name",
+                        "inputType": "Text",
+                        "validators": ["required"],
+                        "help": "A user friendly name for the role"
+                      }
+                    }
+                  }
+                },
                 "_languages": {
                   "type": "array",
                   "required": true,

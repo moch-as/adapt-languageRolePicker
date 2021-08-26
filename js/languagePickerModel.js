@@ -26,7 +26,6 @@ export default class LanguagePickerModel extends Backbone.Model {
   }
 
   getLanguageDetails(language) {
-    // var languageId = this.getLanguagePart(language);
     return this.get('_languages').find(({ _language }) => _language === language);
   }
 
@@ -40,6 +39,12 @@ export default class LanguagePickerModel extends Backbone.Model {
   markLanguageAsSelected(model, language) {
     this.get('_languages').forEach(item => {
       item._isSelected = (item._language === language);
+    });
+    this.get('_languageids').forEach(item => {
+      item._isSelected = (item._language === this.getLanguagePart(language));
+    });
+    this.get('_roles')?.forEach(item => {
+      item._isSelected = (item._role === this.getRolePart(language));
     });
 
     if (Adapt.essensAPI)
@@ -61,7 +66,7 @@ onDataLoaded() {
 
   makeLanguageIdList() {
     const languageIdList = this.get('_languages').map((element) => {
-      return {_language: this.getLanguagePart(element._language), displayName: element.displayName};
+      return {_language: this.getLanguagePart(element._language), displayName: element.displayName, _isSelected: false};
     }).filter((element, index, list) => {
       return (list.findIndex(e => (e._language === element._language)) === index);
     });
