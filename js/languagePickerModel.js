@@ -36,6 +36,35 @@ export default class LanguagePickerModel extends Backbone.Model {
     });
   }
 
+  setLanguageCode(languagecode) {
+    const currentLanguage = Adapt.config._activeLanguage;
+    const currentRole = this.getRolePart(currentLanguage);
+    const newLanguage = currentRole ? `${currentRole}_${languagecode}` : languagecode;
+    if (this.languageExists(newLanguage))
+    {
+      Adapt.config.set({
+        _activeLanguage: newLanguage,
+        _defaultDirection: this.getLanguageDetails(newLanguage)._direction
+      });
+    }
+  }
+
+  setRole(role) {
+    const currentLanguage = Adapt.config._activeLanguage;
+    if (this.hasRole(currentLanguage))
+    {
+      const currentLanguageCode = this.getLanguagePart(currentLanguage);
+      const newLanguage = `${role}_${currentLanguageCode}`;
+      if (this.languageExists(newLanguage))
+      {
+        Adapt.config.set({
+          _activeLanguage: newLanguage,
+          _defaultDirection: this.getLanguageDetails(newLanguage)._direction
+        });
+      }
+    }
+  }
+
   markLanguageAsSelected(model, language) {
     this.get('_languages').forEach(item => {
       item._isSelected = (item._language === language);
@@ -136,6 +165,22 @@ onDataLoaded() {
       const languages = this.get('_languages');
       const foundlanguage = languages ? languages.some(item => item._language === language) : false;
       return foundlanguage;
+  }
+
+  languageCodeExists(languagecode) {
+    const languages = this.get('_languages');
+    const foundlanguagecode = languages ? languages.some(item => this.getLanguagePart(item._language) === languagecode) : false;
+    return foundlanguagecode;
+  }
+
+  roleExists(role) {
+    const languages = this.get('_languages');
+    const foundrole = languages ? languages.some(item => this.getRolePart(item._language) === role) : false;
+    return foundrole;
+  }
+
+  hasRole(language) {
+    return (this.getRolePart(language).length > 0);
   }
 
   onConfigChange(model, value, options) {
