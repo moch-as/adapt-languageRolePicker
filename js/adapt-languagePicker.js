@@ -74,9 +74,11 @@ class LanguagePicker extends Backbone.Controller {
                 this.languagePickerModel.setRole(role, languagecode);
               }
               else {
+                this.languagePickerModel.setLanguageCode(languagecode);
                 this.showLanguagePickerView();
               }
             }).catch(error => {
+              this.languagePickerModel.setLanguageCode(languagecode);
               this.showLanguagePickerView();
             });
           }
