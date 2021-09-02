@@ -68,11 +68,10 @@ class LanguagePicker extends Backbone.Controller {
     if (Adapt.essensAPI) {
       Adapt.essensAPI.getLanguage().then(languagecode => {
         if (this.languagePickerModel.languageCodeExists(languagecode)) {
-          this.languagePickerModel.setLanguageCode(languagecode);
           if (this.languagePickerModel.get('_roles')) {
             Adapt.essensAPI.getRole().then(role => {
               if (this.languagePickerModel.roleExists(role)) {
-                this.languagePickerModel.setRole(languagecode);
+                this.languagePickerModel.setRole(role, languagecode);
               }
               else {
                 this.showLanguagePickerView();
@@ -80,6 +79,9 @@ class LanguagePicker extends Backbone.Controller {
             }).catch(error => {
               this.showLanguagePickerView();
             });
+          }
+          else {
+            this.languagePickerModel.setLanguageCode(languagecode);
           }
         }
         else {
