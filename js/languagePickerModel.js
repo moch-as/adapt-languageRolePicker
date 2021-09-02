@@ -50,14 +50,13 @@ export default class LanguagePickerModel extends Backbone.Model {
   }
 
   setRole(role, languagecode) {
-      const newLanguage = `${role}_${languagecode}`;
-      if (this.languageExists(newLanguage))
-      {
-        Adapt.config.set({
-          _activeLanguage: newLanguage,
-          _defaultDirection: this.getLanguageDetails(newLanguage)._direction
-        });
-      }
+    const newLanguage = `${role}_${languagecode}`;
+    if (this.languageExists(newLanguage))
+    {
+      Adapt.config.set({
+        _activeLanguage: newLanguage,
+        _defaultDirection: this.getLanguageDetails(newLanguage)._direction
+      });
     }
   }
 
