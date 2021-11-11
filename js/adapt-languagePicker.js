@@ -61,40 +61,51 @@ class LanguagePicker extends Backbone.Controller {
       return;
     }
 
-    this.askEssensForRoleAndLanguage();
-  }
-
-  askEssensForRoleAndLanguage() {
     if (Adapt.essensAPI) {
-      Adapt.essensAPI.getLanguage().then(languagecode => {
-        if (this.languagePickerModel.languageCodeExists(languagecode)) {
-          if (this.languagePickerModel.get('_roles')) {
-            Adapt.essensAPI.getRole().then(role => {
-              if (this.languagePickerModel.roleExists(role)) {
-                const newLanguage = this.languagePickerModel.makeLanguage(role, languagecode);
-                this.languagePickerModel.setLanguage(newLanguage);
-              }
-              else {
-                this.languagePickerModel.markLanguageCodeAsSelected(languagecode);
-                this.showLanguagePickerView();
-              }
-            }).catch(error => {
-              this.languagePickerModel.markLanguageCodeAsSelected(languagecode);
-              this.showLanguagePickerView();
-            });
-          }
-          else {
-            this.languagePickerModel.setLanguage(languagecode);
-          }
-        }
-        else {
-          this.showLanguagePickerView();
-        }
-      }).catch(error => {
-        this.showLanguagePickerView();
-      });
+      this.askEssensForRoleAndLanguage();
     }
     else {
+      this.showLanguagePickerView();
+    }
+  }
+
+  async askEssensForRoleAndLanguage() {
+    try
+    {
+      const essensLanguageCode = await Adapt.essensAPI.getLanguage();
+      const essensRole = await Adapt.essensAPI.getRole();
+
+      if (!this.languagePickerModel.hasRoles())
+      {
+        if (this.languagePickerModel.languageCodeExists(essensLanguageCode))
+        {
+          this.languagePickerModel.setLanguage(essensLanguageCode);
+        }
+        else
+        {
+          this.showLanguagePickerView();
+        }
+      }
+      else if (this.languagePickerModel.languageCodeExists(essensLanguageCode))
+      {
+        if (this.languagePickerModel.roleExists(essensRole))
+        {
+          const newLanguage = this.languagePickerModel.makeLanguage(essensRole, essensLanguageCode);
+          this.languagePickerModel.setLanguage(newLanguage);
+        }
+        else
+        {
+          this.languagePickerModel.markLanguageCodeAsSelected(essensLanguageCode);
+          this.showLanguagePickerView();
+        }          
+      }
+      else
+      {
+        this.showLanguagePickerView();  
+      }
+    }
+    catch(error)
+    {
       this.showLanguagePickerView();
     }
   }

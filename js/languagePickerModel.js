@@ -172,12 +172,12 @@ onDataLoaded() {
     return foundrole;
   }
 
-  hasRole(language) {
-    return (this.getRolePart(language).length > 0);
+  hasRoles() {
+    return (this.get('_roles') !== undefined);
   }
 
   makeLanguage(role, languagecode) {
-    return `${role}_${languagecode}`;
+    return role ? `${role}_${languagecode}` : languagecode;
   }
 
   getLanguagePart(language) {
