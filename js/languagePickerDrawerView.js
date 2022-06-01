@@ -27,7 +27,7 @@ export default class LanguagePickerDrawerView extends Backbone.View {
   
   postRender() {
     const languageDropDown = document.getElementById('languagepicker-drawer-languages-select');
-    (languageDropDown) && (languageDropDown.length < 2) && languageDropDown.classList.add('no-selectable-options');
+    (languageDropDown) && (languageDropDown.length < 2) && languageDropDown.parentElement.classList.add('no-selectable-options');
   }
 
   onButtonClick(event) {
