@@ -32,14 +32,14 @@ export default class LanguagePickerView extends Backbone.View {
 
     document.title = this.model.get('title') || '';
 
-    const languageDropDown = document.getElementById('languagepicker-languages-select');
-    (languageDropDown) && (languageDropDown.length < 2) && languageDropDown.classList.add('no-selectable-options');
-
     _.defer(this.postRender.bind(this));
   }
 
   postRender() {
     $('.js-loading').hide();
+
+    const languageDropDown = document.getElementById('languagepicker-languages-select');
+    (languageDropDown) && (languageDropDown.length < 2) && languageDropDown.classList.add('no-selectable-options');
   }
 
   onLanguageClick(event) {
