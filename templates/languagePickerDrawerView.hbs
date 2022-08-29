@@ -6,51 +6,37 @@
 
     <div class="languagepicker-drawer__inner" role="list">
 
-    {{#if _roles}}
-
-      <div class="languagepicker-drawer__options">
+    <div class="languagepicker-drawer__options">
+        <div class="languagepicker-drawer__options-icon icon icon-language-1"></div>
         <select class="languagepicker-drawer__options-select" name="languages" id="languagepicker-drawer-languages-select">
 
-            {{#each _languageids}}
+        {{#each _languageids}}
             <option value="{{_language}}"{{#if _isSelected}} selected{{/if}}>
                 {{{compile displayName}}}
             </option>
-            {{/each}}
+        {{/each}}
 
         </select>
+    </div>
+
+    {{#if _roles}}
+        <div class="languagepicker-drawer__options">
+            <div class="languagepicker-drawer__options-icon icon icon-persons"></div>
+            <select class="languagepicker-drawer__options-select" name="roles" id="languagepicker-drawer-roles-select">
+
+            {{#each _roles}}
+                <option value="{{_role}}"{{#if _isSelected}} selected{{/if}}>
+                    {{{compile displayName}}}
+                </option>
+            {{/each}}
+
+            </select>
         </div>
-
-        {{#each _roles}}
-        <div class="languagepicker-drawer__item drawer__item is-{{_role}}{{#if _isSelected}} is-selected{{/if}}{{#equals _direction "ltr"}} is-ltr{{/equals}}{{#equals _direction "rtl"}} is-rtl{{/equals}}" role="listitem">
-
-            <button class="languagepicker-drawer__roles-btn drawer__item-btn js-languagepicker-item-btn{{#if _isDisabled}} is-disabled{{/if}}" data-language="{{_role}}"{{#if _isDisabled}} aria-disabled="true" tabindex="-1"{{/if}} lang="{{_role}}">
-                <div class="languagepicker-drawer__title drawer__item-title">
-                    <div class="languagepicker-drawer__title-inner drawer__item-title-inner">
-                        {{{compile displayName}}}
-                    </div>
-                </div>
-            </button>
-
-        </div>
-        {{/each}}
-
-    {{else}}
-
-        {{#each _languageids}}
-        <div class="languagepicker-drawer__item drawer__item is-{{_language}}{{#if _isSelected}} is-selected{{/if}}{{#equals _direction "ltr"}} is-ltr{{/equals}}{{#equals _direction "rtl"}} is-rtl{{/equals}}" role="listitem">
-
-            <button class="languagepicker-drawer__language-btn drawer__item-btn js-languagepicker-item-btn{{#any _isSelected _isDisabled}} is-disabled{{/any}}" data-language="{{_language}}"{{#if _isDisabled}} aria-disabled="true" tabindex="-1"{{/if}} lang="{{_language}}">
-                <div class="languagepicker-drawer__title drawer__item-title">
-                    <div class="languagepicker-drawer__title-inner drawer__item-title-inner">
-                        {{{compile displayName}}}
-                    </div>
-                </div>
-            </button>
-
-        </div>
-        {{/each}}
-
     {{/if}}
+
+    <button class="btn-text languagepicker-drawer__submit-btn js-languagepicker-drawer-btn-click" id={{#if _roles}}"roles-submit"{{else}}"language-submit"{{/if}}>
+        {{{compile _submitButtonTitle}}}
+    </button>
 
   </div>
 

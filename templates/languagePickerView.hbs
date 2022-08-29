@@ -16,43 +16,36 @@
         </div>
     {{/if}}
 
+    <div class="languagepicker__options">
+        <div class="languagepicker__options-icon icon icon-language-1"></div>
+        <select class="languagepicker__options-select" name="languages" id="languagepicker-languages-select">
+
+        {{#each _languageids}}
+            <option value="{{_language}}"{{#if _isSelected}} selected{{/if}}>
+                {{{compile displayName}}}
+            </option>
+        {{/each}}
+
+        </select>
+    </div>
+
     {{#if _roles}}
         <div class="languagepicker__options">
-            <div class="languagepicker__options-icon icon icon-language-1"></div>
-            <select class="languagepicker__options-select" name="languages" id="languagepicker-languages-select">
+            <div class="languagepicker__options-icon icon icon-persons"></div>
+            <select class="languagepicker__options-select" name="roles" id="languagepicker-roles-select">
 
-            {{#each _languageids}}
-                <option value="{{_language}}"{{#if _isSelected}} selected{{/if}}>
+            {{#each _roles}}
+                <option value="{{_role}}"{{#if _isSelected}} selected{{/if}}>
                     {{{compile displayName}}}
                 </option>
             {{/each}}
 
             </select>
         </div>
-
-        <div class="languagepicker__button">
-            <div class="languagepicker__button-inner">
-
-            {{#each _roles}}
-                <button class="btn-text languagepicker__roles-btn is-{{_role}} js-languagepicker-btn-click{{#if _isDisabled}} is-disabled{{/if}}" value="{{_role}}"{{#if _isDisabled}} aria-disabled="true" tabindex="-1"{{/if}} data-language="{{_role}}">
-                    {{{compile displayName}}}
-                </button>
-            {{/each}}
-
-            </div>
-        </div>
-    {{else}}
-        <div class="languagepicker__button">
-            <div class="languagepicker__button-inner">
-
-            {{#each _languageids}}
-                <button class="btn-text languagepicker__language-btn is-{{_language}} js-languagepicker-btn-click{{#if _isDisabled}} is-disabled{{/if}}" value="{{_language}}"{{#if _isDisabled}} aria-disabled="true" tabindex="-1"{{/if}} data-language="{{_language}}">
-                    {{{compile displayName}}}
-                </button>
-            {{/each}}
-
-            </div>
-        </div>
     {{/if}}
+
+    <button class="btn-text languagepicker__submit-btn js-languagepicker-btn-click" id={{#if _roles}}"roles-submit"{{else}}"language-submit"{{/if}}>
+        {{{compile _submitButtonTitle}}}
+    </button>
 
 </div>

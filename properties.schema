@@ -106,6 +106,15 @@
                   "validators": [],
                   "help": ""
                 },
+                "_submitButtonTitle": {
+                  "type": "string",
+                  "required": false,
+                  "default": "OK",
+                  "title": "Submit button title",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": ""
+                },
                 "_roles": {
                   "type": "array",
                   "required": false,

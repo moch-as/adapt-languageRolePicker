@@ -8,7 +8,7 @@ export default class LanguagePickerDrawerView extends Backbone.View {
 
   events() {
     return {
-      'click .js-languagepicker-item-btn': 'onButtonClick'
+      'click .js-languagepicker-drawer-btn-click': 'onButtonClick'
     };
   }
 
@@ -28,19 +28,21 @@ export default class LanguagePickerDrawerView extends Backbone.View {
   postRender() {
     const languageDropDown = document.getElementById('languagepicker-drawer-languages-select');
     (languageDropDown) && (languageDropDown.length < 2) && languageDropDown.parentElement.classList.add('no-selectable-options');
+    const rolesDropDown = document.getElementById('languagepicker-drawer-roles-select');
+    (rolesDropDown) && (rolesDropDown.length < 2) && rolesDropDown.parentElement.classList.add('no-selectable-options');
   }
 
   onButtonClick(event) {
-    const hasRoles = event.currentTarget.classList.contains('languagepicker-drawer__roles-btn');
-    const rolePart = hasRoles ? event.currentTarget.dataset.language : '';
-    const languagePart = hasRoles ? document.getElementById('languagepicker-drawer-languages-select').value : event.currentTarget.dataset.language;
+    const hasRoles = (event.currentTarget.id === 'roles-submit');
+    const rolePart = hasRoles ? document.getElementById('languagepicker-drawer-roles-select').value : '';
+    const languagePart = document.getElementById('languagepicker-drawer-languages-select').value;
     const newLanguage = (rolePart.length > 0) ? `${rolePart}_${languagePart}` : languagePart;
 
-    if (newLanguage === this.model.getSelectedLanguage()) return;
-
-    this.model.set('newLanguage', newLanguage);
-    this.promptObject = this.getPromptObject(newLanguage);
-    this.listenToOnce(Adapt, 'drawer:closed', this.onDrawerClosed);
+    if (newLanguage !== this.model.getSelectedLanguage()) {
+      this.model.set('newLanguage', newLanguage);
+      this.promptObject = this.getPromptObject(newLanguage);
+      this.listenToOnce(Adapt, 'drawer:closed', this.onDrawerClosed);
+    }
     Adapt.trigger('drawer:closeDrawer');
   }
   
