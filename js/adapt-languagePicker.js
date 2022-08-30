@@ -61,12 +61,7 @@ class LanguagePicker extends Backbone.Controller {
       return;
     }
 
-    if (Adapt.essensAPI?._hasEssens) {
-      this.askEssensForRoleAndLanguage();
-    }
-    else {
-      this.showLanguagePickerView();
-    }
+    this.askEssensForRoleAndLanguage();
   }
 
   async askEssensForRoleAndLanguage() {
