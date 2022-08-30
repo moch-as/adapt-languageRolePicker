@@ -95,12 +95,17 @@ class LanguagePicker extends Backbone.Controller {
         }
         else
         {
+          this.languagePickerModel.markLanguageAsSelected(essensLanguageCode);
           this.languagePickerModel.markLanguageCodeAsSelected(essensLanguageCode);
           this.showLanguagePickerView();
         }          
       }
       else
       {
+        if (this.languagePickerModel.roleExists(essensRole))
+        {
+          this.languagePickerModel.markRoleAsSelected(essensRole);
+        }          
         this.showLanguagePickerView();  
       }
     }

@@ -20,7 +20,7 @@ export default class LanguagePickerModel extends Backbone.Model {
   }
 
   initialize() {
-    this.listenTo(Adapt.config, 'change:_activeLanguage', this.markLanguageAsSelected);
+    this.listenTo(Adapt.config, 'change:_activeLanguage', this.onActiveLanguageChange);
     this.listenTo(Adapt, 'app:dataLoaded', this.onDataLoaded);
     this.makeLanguageIdList();
   }
@@ -36,12 +36,14 @@ export default class LanguagePickerModel extends Backbone.Model {
     });
   }
 
-  markLanguageAsSelected(model, language) {
-    this.markLanguageAndRoleAsSelected(language);
+  onActiveLanguageChange(model, selectedLanguage) {
+    const selectedRole = this.getRolePart(selectedLanguage);
+    this.markLanguageAsSelected(selectedLanguage);
+    this.markLanguageCodeAsSelected(selectedLanguage);
+    this.markRoleAsSelected(selectedRole);
 
     if (Adapt.essensAPI?._hasEssens)
     {
-      const selectedRole = this.getRolePart(language);
       Adapt.essensAPI.setRole(selectedRole);
     }
 }
@@ -110,7 +112,7 @@ onDataLoaded() {
       
   makeLanguageIdList() {
     const languageIdList = this.get('_languages').map((element) => {
-      return {_language: this.getLanguagePart(element._language), displayName: element.displayName, _isSelected: false};
+      return {_language: this.getLanguageCodePart(element._language), displayName: element.displayName, _isSelected: false};
     }).filter((element, index, list) => {
       return (list.findIndex(e => (e._language === element._language)) === index);
     });
@@ -118,34 +120,24 @@ onDataLoaded() {
     this.set('_languageids', languageIdList);
   }
 
-  markLanguageAndRoleAsSelected(language) {
+  markLanguageAsSelected(language) {
     this.get('_languages').forEach(item => {
       item._isSelected = (item._language === language);
     });
+  }
+
+  markLanguageCodeAsSelected(language) {
+    const languageCode = this.getLanguageCodePart(language);
     this.get('_languageids').forEach(item => {
-      item._isSelected = (item._language === this.getLanguagePart(language));
+      item._isSelected = (item._language === languageCode);
     });
+  }
+
+  markRoleAsSelected(language) {
+    const role = this.getRolePart(language);
     this.get('_roles')?.forEach(item => {
-      item._isSelected = (item._role === this.getRolePart(language));
+      item._isSelected = (item._role === role);
     });
-  }
-
-  markLanguageCodeAsSelected(languagecode) {
-    const currentLanguage = Adapt.config.get('_activeLanguage') ?? Adapt.config.get('_defaultLanguage');
-    const currentRole = this.getRolePart(currentLanguage);
-    const newLanguage = currentRole ? this.makeLanguage(currentRole, languagecode) : languagecode;
-    if (this.languageExists(newLanguage))
-    {
-      this.markLanguageAndRoleAsSelected(newLanguage);
-    }
-  }
-
-  markRoleAsSelected(role, languagecode) {
-    const newLanguage = this.makeLanguage(role, languagecode);
-    if (this.languageExists(newLanguage))
-    {
-      this.markLanguageAndRoleAsSelected(newLanguage);
-    }
   }
 
   getSelectedLanguage() {
@@ -160,10 +152,10 @@ onDataLoaded() {
       return foundlanguage;
   }
 
-  languageCodeExists(languagecode) {
+  languageCodeExists(languageCode) {
     const languages = this.get('_languages');
-    const foundlanguagecode = languages ? languages.some(item => this.getLanguagePart(item._language) === languagecode) : false;
-    return foundlanguagecode;
+    const foundLanguageCode = languages ? languages.some(item => this.getLanguageCodePart(item._language) === languageCode) : false;
+    return foundLanguageCode;
   }
 
   roleExists(role) {
@@ -176,11 +168,11 @@ onDataLoaded() {
     return (this.get('_roles') !== undefined);
   }
 
-  makeLanguage(role, languagecode) {
-    return role ? `${role}_${languagecode}` : languagecode;
+  makeLanguage(role, languageCode) {
+    return role ? `${role}_${languageCode}` : languageCode;
   }
 
-  getLanguagePart(language) {
+  getLanguageCodePart(language) {
       return language.includes('_') ? language.split('_').pop() : language;
   }
 
