@@ -37,13 +37,13 @@ export default class LanguagePickerModel extends Backbone.Model {
   }
 
   onActiveLanguageChange(model, selectedLanguage) {
-    const selectedRole = this.getRolePart(selectedLanguage);
     this.markLanguageAsSelected(selectedLanguage);
     this.markLanguageCodeAsSelected(selectedLanguage);
-    this.markRoleAsSelected(selectedRole);
+    this.markRoleAsSelected(selectedLanguage);
 
     if (Adapt.essensAPI?._hasEssens)
     {
+      const selectedRole = this.getRolePart(selectedLanguage);
       Adapt.essensAPI.setRole(selectedRole);
     }
 }
