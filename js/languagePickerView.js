@@ -76,8 +76,8 @@ export default class LanguagePickerView extends Backbone.View {
   showLanguageSelectionState(clear = false) {
     const languageDropDown = document.getElementById('languagepicker-languages-select');
     const rolesDropDown = document.getElementById('languagepicker-roles-select');
-    languageDropDown.classList.toggle('option-unselected', !clear && !this.isLanguageSelected());
-    rolesDropDown.classList.toggle('option-unselected', !clear && !this.isRoleSelected());
+    languageDropDown.classList.toggle('languagepicker__options-unselected', !clear && !this.isLanguageSelected());
+    rolesDropDown.classList.toggle('languagepicker__options-unselected', !clear && !this.isRoleSelected());
   }
 
   showRoleSelectionState() {
