@@ -50,7 +50,7 @@ export default class LanguagePickerView extends Backbone.View {
     const languageIDs = this.model.get('_languageids');
     languageIDs.some(language => language._isSelected) || (languageDropDown.selectedIndex = -1);
     const roles = this.model.get('_roles');
-    roles.some(role => role._isSelected) || (rolesDropDown.selectedIndex = -1);
+    roles && (roles.some(role => role._isSelected) || (rolesDropDown.selectedIndex = -1));
     this.updateSubmitButtonState();
   }
 
@@ -73,19 +73,15 @@ export default class LanguagePickerView extends Backbone.View {
     return (rolesDropDown.selectedIndex > -1);
   }
 
-  showLanguageSelectionState(clear = false) {
+  showSelectionState(clear = false) {
     const languageDropDown = document.getElementById('languagepicker-languages-select');
     const rolesDropDown = document.getElementById('languagepicker-roles-select');
     languageDropDown.classList.toggle('languagepicker__options-unselected', !clear && !this.isLanguageSelected());
-    rolesDropDown.classList.toggle('languagepicker__options-unselected', !clear && !this.isRoleSelected());
-  }
-
-  showRoleSelectionState() {
-    const rolesDropDown = document.getElementById('languagepicker-roles-select');
+    rolesDropDown?.classList.toggle('languagepicker__options-unselected', !clear && !this.isRoleSelected());
   }
 
   onOptionSelect() {
-    this.showLanguageSelectionState(true);
+    this.showSelectionState(true);
     this.updateSubmitButtonState();
   }
 
@@ -99,8 +95,7 @@ export default class LanguagePickerView extends Backbone.View {
       if (newLanguage) this.model.setLanguage(newLanguage);
     }
     else {
-      this.showLanguageSelectionState();
-      this.showRoleSelectionState();
+      this.showSelectionState();
     }
   }
 
