@@ -48,9 +48,11 @@ export default class LanguagePickerView extends Backbone.View {
 
   clearUnselectedItems(languageDropDown, rolesDropDown) {
     const languageIDs = this.model.get('_languageids');
-    languageIDs.some(language => language._isSelected) || (languageDropDown.selectedIndex = -1);
+    const languagePlaceholder = this.model.get('_languageOptionsPlaceholder');
+    if (!languageIDs.some(language => language._isSelected) && !languagePlaceholder.length) languageDropDown.selectedIndex = -1;
     const roles = this.model.get('_roles');
-    roles && (roles.some(role => role._isSelected) || (rolesDropDown.selectedIndex = -1));
+    const rolePlaceholder = this.model.get('_roleOptionsPlaceholder');
+    if (!roles.some(role => role._isSelected) && !rolePlaceholder.length) rolesDropDown.selectedIndex = -1;
     this.updateSubmitButtonState();
   }
 
