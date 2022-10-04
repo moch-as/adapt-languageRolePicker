@@ -115,6 +115,15 @@
                   "validators": [],
                   "help": ""
                 },
+                "_askEssensForRoleAndLanguage": {
+                  "type": "boolean",
+                  "required": true,
+                  "default": false,
+                  "title": "Ask Essens for language and role.",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "help": "If Essens is present, ask it for language and role."
+                },                      
                 "_roles": {
                   "type": "array",
                   "required": false,

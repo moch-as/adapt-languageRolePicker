@@ -60,8 +60,12 @@ class LanguagePicker extends Backbone.Controller {
       this.languagePickerModel.setLanguage(Adapt.config.get('_defaultLanguage'));
       return;
     }
-
-    this.askEssensForRoleAndLanguage();
+    else if (this.languagePickerModel.get('_askEssensForRoleAndLanguage') === false) {
+      this.showLanguagePickerView();
+    }
+    else {
+      this.askEssensForRoleAndLanguage();
+    }
   }
 
   async askEssensForRoleAndLanguage() {
