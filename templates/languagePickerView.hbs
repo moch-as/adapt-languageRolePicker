@@ -20,6 +20,11 @@
         <div class="languagepicker__options-icon icon icon-language-1"></div>
         <select class="languagepicker__options-select" name="languages" id="languagepicker-languages-select">
 
+        {{#if languageOptionsPlaceholder}}
+            <option value="" class="languagepicker__options-placeholder" disabled selected hidden>
+                {{{compile languageOptionsPlaceholder}}}
+            </option>
+        {{/if}}
         {{#each _languageids}}
             <option value="{{_language}}"{{#if _isSelected}} selected{{/if}}>
                 {{{compile displayName}}}
@@ -34,6 +39,11 @@
             <div class="languagepicker__options-icon icon icon-persons"></div>
             <select class="languagepicker__options-select" name="roles" id="languagepicker-roles-select">
 
+            {{#if roleOptionsPlaceholder}}
+                <option value="" class="languagepicker__options-placeholder" disabled selected hidden>
+                    {{{compile roleOptionsPlaceholder}}}
+                </option>
+            {{/if}}
             {{#each _roles}}
                 <option value="{{_role}}"{{#if _isSelected}} selected{{/if}}>
                     {{{compile displayName}}}
