@@ -124,6 +124,24 @@
                   "validators": [],
                   "help": "If Essens is present, ask it for language and role."
                 },                      
+                "_languageOptionsPlaceholder": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "title": "Language option placeholder text",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "Text to show when no item is selected in the language drop down."
+                },
+                "_roleOptionsPlaceholder": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "title": "Role option placeholder text",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "Text to show when no item is selected in the role drop down."
+                },
                 "_roles": {
                   "type": "array",
                   "required": false,
