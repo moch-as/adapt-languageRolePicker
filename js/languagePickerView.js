@@ -67,12 +67,12 @@ export default class LanguagePickerView extends Backbone.View {
 
   isLanguageSelected() {
     const languageDropDown = document.getElementById('languagepicker-languages-select');
-    return (languageDropDown.value === '');
+    return (languageDropDown.value !== '');
   }
 
   isRoleSelected() {
     const rolesDropDown = document.getElementById('languagepicker-roles-select');
-    return (rolesDropDown.value === '');
+    return (rolesDropDown.value !== '');
   }
 
   showSelectionState(clear = false) {
