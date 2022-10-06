@@ -18,7 +18,7 @@
 
     <div class="languagepicker__options">
         <div class="languagepicker__options-icon icon icon-language-1"></div>
-        <select class="languagepicker__options-select" name="languages" id="languagepicker-languages-select">
+        <select class="languagepicker__options-select" name="languages" id="languagepicker-languages-select" required>
 
         {{#if _languageOptionsPlaceholder}}
             <option value="" class="languagepicker__options-placeholder" disabled selected hidden>
@@ -37,7 +37,7 @@
     {{#if _roles}}
         <div class="languagepicker__options">
             <div class="languagepicker__options-icon icon icon-persons"></div>
-            <select class="languagepicker__options-select" name="roles" id="languagepicker-roles-select">
+            <select class="languagepicker__options-select" name="roles" id="languagepicker-roles-select" required>
 
             {{#if _roleOptionsPlaceholder}}
                 <option value="" class="languagepicker__options-placeholder" disabled selected hidden>
