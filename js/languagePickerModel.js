@@ -48,7 +48,7 @@ export default class LanguagePickerModel extends Backbone.Model {
         Adapt.essensAPI.setRole(selectedRole);
       }
       catch(error) {
-        console.error(`Adapt Language Picker: failed to send selected role (${rolename}) to Essens.`);
+        console.error(`Adapt Language Picker: failed to send selected role (${selectedRole}) to Essens.`);
       }
     }
 }
